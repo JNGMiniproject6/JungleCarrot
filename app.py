@@ -42,6 +42,22 @@ def api_login():
     else:
         return jsonify({'result': 'fail', 'msg': '아이디/비밀번호가 일치하지 않습니다.'})
     
+
+@app.route('/api/nick', methods=['GET'])
+def api_valid():
+    token_receive = request.kookies.get('mytoken')
+    
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        print(payload)
+        
+        userinfo = db.user.find_one({'id':payload['id']}, {'_id':0})
+        return jsonify({'result':'success', 'nickname':userinfo['nick']})
+    except jwt.ExpiredSignatureError:
+        return jsonify({'result':'fail', 'msg':'로그인 시간이 만료되었습니다. '})
+    except jwt.exceptions.DecodeError:
+        return jsonify({'result':'fail', 'msg':'로그인 정보가 존제하지 않습니다.'})
+    
     
     
     

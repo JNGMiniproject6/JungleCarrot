@@ -49,7 +49,7 @@
           </div>
 
           <div class="fixed bottom-40 right-40">
-            <a href="test.html">
+            <a onclick="register_group_buy_item">
             <button class="p-2 w-20 h-20 bg-green-200 text-slate-600 text-4xl rounded-full flex items-center justify-center">
               +
             </button>
@@ -212,6 +212,78 @@
       
               </div>
           </div>
+      </div>
+
+      <div id="register_group_buy_item"
+      class="fixed hidden z-50 inset-0 bg-gray-900 bg-opacity-60 overflow-y-auto h-full w-full px-4 ">
+      <div class="relative top-40 mx-auto shadow-xl rounded-md bg-white max-w-md">
+          <div class="flex justify-end p-2">
+              <h2 class="text-lg font-semibold p-2">나눔 상품 등록하기</h2>
+              <button onclick="closeModal('register_group_buy_item')" type="button"
+                  class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center">
+                  <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                      <path fill-rule="evenodd"
+                          d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                          clip-rule="evenodd"></path>
+                  </svg>
+              </button>
+          </div>
+      
+          <div class="p-6 pt-0 text-center">
+              <div class="flex w-300 h-170 m-5 justify-center">
+                  <form class="flex-auto p-2">
+                      <div class="flex-auto p-2 text-left">
+                          <label for="place">장소</label>
+                          <select id="place">
+                              <option value="classroom">강의실</option>
+                              <option value="home">기숙사</option>
+                              <option value="resturant">식당</option>
+                          </select>
+                      </div>
+                      <div class="flex-auto p-2 text-left">
+                          <label for="time">시간</label>
+                          <input id="time" required class="w-full rounded-md border border-[#e0e0e0]">
+                      </div>
+                      <div class="flex-auto p-2 text-left">
+                          <label for="category">카테고리</label>
+                          <select id="category">
+                              <option value="item">생필품</option>
+                              <option value="food">음식</option>
+                              <option value="etc">기타</option>
+                          </select>
+                      </div>
+                      <div class="flex-auto p-2 text-left">
+                          <label for="people">인원수</label>
+                          <input id="people" required class="w-full rounded-md border border-[#e0e0e0]">
+                      </div>
+                      <div class="flex-auto p-2 text-left">
+                          <label for="link">채팅방 링크</label>
+                          <input id="link" required class="w-full rounded-md border border-[#e0e0e0]">
+                      </div>
+                  </form>
+                  <div class="grid place-items-center">
+                      <h3>오픈채팅방 만드는 법</h3>
+                      <div>1. 카카오톡>
+                          오픈채팅탭>
+                          우상단 채팅 만들기 버튼 누르기
+                      </div>
+                      <div>
+                          2. 우상단 MY 버튼 > 나의 채팅방 영역의 만들기 버튼 누르기
+                      </div>
+                  </div>
+              </div>
+      
+              <a href="#" onclick="closeModal('rregister_group_buy_item')"
+                  class="text-white bg-green-600 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-base inline-flex items-center px-3 py-2.5 text-center mr-2">
+                  등록하기
+              </a>
+              <a href="#" onclick="closeModal('register_group_buy_item')"
+                  class="text-gray-900 bg-white hover:bg-gray-100 focus:ring-4 focus:ring-cyan-200 border border-gray-200 font-medium inline-flex items-center rounded-lg text-base px-3 py-2.5 text-center"
+                  data-modal-toggle="delete-user-modal">
+                  다음에 등록하기
+              </a>
+          </div>
+      </div>
       </div>
         
     

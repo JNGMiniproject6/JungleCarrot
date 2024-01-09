@@ -1,39 +1,46 @@
-from flask import Flask, render_template, jsonify, request, session, redirect, url_for
+from flask import Flask, jsonify, request, render_template
 SECRET_KEY = 'jungle'
-app = Flask(__name__)
-##from pymongo import MongoClient 데이터베이스 연결
+
+from pymongo import MongoClient
 import jwt
 import datetime
 import hashlib
 
-##회원가입 api
+db = MongoClient('localhost', 27017).jcarrot
 
-@app.route('/api/register/', methods=['POST'])
+app = Flask(__name__)
+
+##회원가입 api
+@app.route('/')
+def home():
+    return render_template("index.html")
+
+@app.route('/api/register', methods=['POST', 'GET'])
 def api_register():
         id_receive = request.form['id_give']
         pw_receive = request.form['pw_give']
         name_receive = request.form['name_give']
         email_receive = request.form['email_give']
+        print("id_receive", id_receive)
     
-        pw_hash = hashlib.sha256(pw_receive.endoce('utf-8')).hexdigest()
-        ##pw 암호화
+        pw_hash = hashlib.sha256(pw_receive.encode('utf-8')).hexdigest()
     
-        db.user.insert_one({'id':id_receive, 'pw':pw_hash})
-        ##db 경로 수정
+        db.user.insert_one({'user_id':id_receive, 'pw':pw_hash,'gmail':email_receive, 'name':name_receive})
+        
+        return jsonify({'result': 'success', 'msg': '회원가입이 완료되었습니다.'})
  
 @app.route('/api/login', methods=['POST'])
 def api_login():
     id_receive = request.form['id_give']
     pw_receive = request.form['pw_give']
-    pw_hash = hashlib.sha256(pw_receive.endoce('utf-8')).hexdigest()
+    pw_hash = hashlib.sha256(pw_receive.encode('utf-8')).hexdigest()
     
     result = db.user.find_one({'id': id_receive, 'pw': pw_hash}) 
-    ##db 경로 수정
  
     if result is not None:
         payload = {
             'id' : id_receive,
-            'exp' : datetime.datetime.utcnow() + datetime.timedelta(seconds=5)    
+            'exp' : datetime.datetime.utcnow() + datetime.timedelta(seconds=5)
         }
 
         token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
@@ -57,9 +64,6 @@ def api_valid():
         return jsonify({'result':'fail', 'msg':'로그인 시간이 만료되었습니다. '})
     except jwt.exceptions.DecodeError:
         return jsonify({'result':'fail', 'msg':'로그인 정보가 존제하지 않습니다.'})
-    
-    
-    
     
     
 

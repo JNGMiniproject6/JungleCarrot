@@ -10,6 +10,8 @@ db = MongoClient('localhost', 27017).jcarrot
 
 app = Flask(__name__)
 
+
+
 ##회원가입 api
 @app.route('/')
 def home():

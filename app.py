@@ -15,6 +15,10 @@ app = Flask(__name__)
 def home():
     return render_template("index.html")
 
+@app.route('/group_buy')
+def group_buy():
+    return render_template("group_buy.html")
+
 @app.route('/api/register', methods=['POST', 'GET'])
 def api_register():
         id_receive = request.form['id_give']
@@ -66,8 +70,6 @@ def api_valid():
     except jwt.exceptions.DecodeError:
         return jsonify({'result':'fail', 'msg':'로그인 정보가 존제하지 않습니다.'})
     
-    
-
 if __name__ == '__main__':
 	app.run(host = '0.0.0.0',
 					port = 5000, 

@@ -34,15 +34,16 @@ def api_login():
     id_receive = request.form['id_give']
     pw_receive = request.form['pw_give']
     pw_hash = hashlib.sha256(pw_receive.encode('utf-8')).hexdigest()
+    print("pw_hash", pw_hash)
+    print("id_receive", id_receive)
     
-    result = db.user.find_one({'id': id_receive, 'pw': pw_hash}) 
+    result = db.user.find_one({'user_id': id_receive, 'pw': pw_hash}) 
  
     if result is not None:
         payload = {
             'id' : id_receive,
             'exp' : datetime.datetime.utcnow() + datetime.timedelta(seconds=5)
         }
-
         token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
         
         return jsonify({'result': 'success', 'token': token})

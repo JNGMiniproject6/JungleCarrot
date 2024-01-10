@@ -186,27 +186,32 @@ def buy_join():
    item_id_receive = request.form['item_id_give']
    user_id_receive = request.form['user_id_give']
 
-   print(item_id_receive)
-#    id_receive = request.form['id_give']
-   print(db.item.find({'user_id':item_id_receive}))
+   user_list = db.item.find_one({'user_id':user_id_receive,'item_id':item_id_receive},{'_id':0})
+   
+   kakao_link = db.item.find_one({'user_id':user_id_receive},{'_id':0})['link']
+   print(kakao_link)
+   mail_list = [db.user.find_one({'user_id':user_id_receive})['gmail']]
+   for i in user_list['user_id']:
+       mail = db.user.find_one({'user_id':i})
+       mail_list.append(mail['gmail'])
+
    item = db.item.find_one({'item_id':item_id_receive})
-   print(item)
-   print("추가 전 ", item['current_people'])
+
    db.item.update_one({}, {'$set': {'current_people': 0}}) # current_people 값 초기화
    if item['current_people'] == item['max_people'] - 1:
       db.item.update_one({'item_id': item_id_receive}, {'$push': {'user_id':user_id_receive}})
       people_up = item['current_people'] + 1
-      print("!@#")
-      print(people_up)
+
       result = db.item.update_one({'item_id':item_id_receive}, {'$set': {'current_people': people_up}})
-      # people_list.append() # 사용자의 아이디 받아와서 리스트에 추가하기
-      print("추가 후 ",people_up)
-      print("GMAIL 전송하기")
-      msg = MIMEText(item['link'])   # 메일의 내용
+
+
+      msg = MIMEText(kakao_link)   # 메일의 내용
       msg['Subject'] = '공동구매를 위한 카카오톡 오픈 채팅 링크입니다.' # 메일의 제목
-      receiver = ['arevolvera@gmail.com','gold6219@naver.com','moorow0729@hufs.ac.kr'] # 전송할 메일 주소의 리스트
-   
-    #   smtp.sendmail('dohyeon0518@gmail.com',receiver,msg.as_string())
+    #   receiver = ['arevolvera@gmail.com','gold6219@naver.com','moorow0729@hufs.ac.kr'] # 전송할 메일 주소의 리스트
+      receiver = mail_list
+      print(receiver)
+      smtp.sendmail('dohyeon0518@gmail.com',receiver,msg.as_string())
+      smtp.quit()
       smtp.quit()
 
       if result.modified_count == 1:

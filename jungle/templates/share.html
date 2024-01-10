@@ -57,6 +57,16 @@
             },
           });
         }
+
+        function deleteCookie(name) {
+          document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+        }
+
+        function logout(){
+          deleteCookie('mytoken');
+          window.location.href = '/';
+        alert('로그아웃 되었습니다!')
+       }
       </script>
       <title>share</title>
     </head>
@@ -69,13 +79,13 @@
         >
           <div class="flex items-center">
             <p class="ml-4 text-lg"><a href="/group_buy">공동구매</a></p>
-            <p class="ml-4 text-lg"><a href="/share">나눔</a></p>
+            <p class="ml-4 text-lg font-bold"><a href="/share">나눔</a></p>
           </div>
           <div class="flex items-center">
             <p class="text-lg mr-4 text-right" onclick="openModal('my_item')">
               내 품목
             </p>
-            <p class="text-lg text-right">로그아웃</p>
+            <p class="text-lg text-right"><a onclick = 'logout()'>로그아웃</a></p>
           </div>
         </div>
         <div

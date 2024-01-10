@@ -53,6 +53,7 @@
             success: function (response) {
               if (response["result"] == "success") {
                 alert("나눔에 등록되었습니다!");
+                location.reload();
               } else {
                 alert("다음에 등록해주세요!");
               }

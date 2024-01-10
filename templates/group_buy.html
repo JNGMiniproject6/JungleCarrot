@@ -14,6 +14,32 @@
                   document.getElementById(modalId).style.display = 'none'
                   document.getElementsByTagName('body')[0].classList.remove('overflow-y-hidden')
               }
+              function item_regist() {
+                $.ajax({
+                  type: "POST",
+                  url: "/api/itemregist",
+                  data: {
+                    item_id_give: $("").val(), // 물건 등록시 필요한 데이터, share와 group_buy에 같은 조건을 걸어서 app을 하나만사용
+                    item_user_id_give: $("").val(),
+                    item_info_give: $("").val(),
+                    item_category_give: $("").val(),
+                    item_current_people_give: $("").val(),
+                    item_max_people_give: $("").val(),
+                    tem_url_give: $("").val(),
+                    item_type_give: $("").val(),
+                    item_link_give: $("").val(),           
+                  },
+                  success: function (response) {
+                    if (response["result"] == "success") {
+                      $.cookie("mytoken", response["token"]);
+        
+                      alert("물건 등록 완료!");
+                    } else {
+                      alert(response["msg"]);
+                    }
+                  },
+                });
+              }
           </script>
             <title>group_buy</title>
           </head>
@@ -49,7 +75,7 @@
           </div>
 
           <div class="fixed bottom-40 right-40">
-            <a onclick="register_group_buy_item">
+            <a onclick="openModal('register_group_buy_item')">
             <button class="p-2 w-20 h-20 bg-green-200 text-slate-600 text-4xl rounded-full flex items-center justify-center">
               +
             </button>
@@ -273,7 +299,7 @@
                   </div>
               </div>
       
-              <a href="#" onclick="closeModal('rregister_group_buy_item')"
+              <a href="#" onclick="closeModal('register_group_buy_item')"
                   class="text-white bg-green-600 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-base inline-flex items-center px-3 py-2.5 text-center mr-2">
                   등록하기
               </a>

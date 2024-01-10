@@ -68,6 +68,37 @@ def api_valid():
         return jsonify({'result':'fail', 'msg':'로그인 정보가 존제하지 않습니다.'})
     
     
+    
+    
+@app.route('/api/itemregist', methods=['POST'])
+def api_item():
+    ## 물건 db 컨테이너
+    item_id_receive = request.form['item_id_give']
+    item_user_id_receive = request.form['item_user_id_give']
+    item_info_receive = request.form['item_info_give']
+    item_category_receive = request.form['item_category_give']
+    item_current_people_receive = request.form['item_current_people_give']
+    item_max_people_receive = request.form['item_max_people_give']
+    item_url_receive = request.form['item_url_give']
+    item_type_receive = request.form['item_type_give']
+    item_link_receive = request.form['item_link_give']
+    
+    db.item.insert_one({
+        'id':item_id_receive,
+        'user_id':item_user_id_receive,
+        'info':item_info_receive,
+        'category':item_category_receive,
+        'current_people':item_current_people_receive,
+        'max_people':item_max_people_receive,
+        'url':item_url_receive,
+        'type':item_type_receive,
+        'link':item_link_receive
+        })#아이템 데이터
+    
+    return jsonify({'result': 'success', 'msg': '물품이 정상적으로 등록되었습니다.'})
+    
+    
+    
 
 if __name__ == '__main__':
 	app.run(host = '0.0.0.0',

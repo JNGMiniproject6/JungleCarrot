@@ -41,16 +41,18 @@
             type: "POST",
             url: "/api/itemregist",
             data: {
-              item_info_give: $("#itemInfo").val(),
+              item_type_give: 0,
+              item_info_give: 0,
+              item_url_give: $("#itemUrl").val(),
               place_give: $("#place").val(),
               time_give: $("#time").val(),
               category_give: $("#category").val(),
               people_give: $("#people").val(),
-              link_give: $("#link").val(),
+              chatLink_give: $("#chatLink").val(),
             },
             success: function (response) {
               if (response["result"] == "success") {
-                alert("나눔에 등록되었습니다!");
+                alert("공동구매에 등록되었습니다!");
               } else {
                 alert("다음에 등록해주세요!");
               }
@@ -295,17 +297,17 @@
                   />
                 </div>
                 <div class="flex-auto p-2 text-left">
-                  <label for="people">상품 설명</label>
+                  <label for="itemUrl">상품 링크</label>
                   <input
-                    id="itemInfo"
+                    id="itemUrl"
                     required
                     class="w-full rounded-md border border-[#e0e0e0]"
                   />
                 </div>
                 <div class="flex-auto p-2 text-left">
-                  <label for="link">채팅방 링크</label>
+                  <label for="chatLink">채팅방 링크</label>
                   <input
-                    id="link"
+                    id="chatLink"
                     required
                     class="w-full rounded-md border border-[#e0e0e0]"
                   />

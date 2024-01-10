@@ -176,9 +176,9 @@ def api_item():
     item_category_receive = request.form['category_give']
     # item_current_people_receive = request.form['item_current_people_give']
     item_max_people_receive = request.form['people_give']
-    # item_url_receive = request.form['item_url_give']
-    # item_type_receive = request.form['item_type_give']
-    item_link_receive = request.form['link_give']
+    item_url_receive = request.form['item_url_give']
+    item_type_receive = request.form['item_type_give']
+    chat_link_receive = request.form['chatLink_give']
     
     db.item.insert_one({
         # 'id':item_id_receive,
@@ -189,9 +189,9 @@ def api_item():
         'category':item_category_receive,
         # 'current_people':item_current_people_receive,
         'max_people':item_max_people_receive,
-        # 'url':item_url_receive,
-        # 'type':item_type_receive,
-        'link':item_link_receive
+        'url':item_url_receive,
+        'item_type':item_type_receive,
+        'link':chat_link_receive
         })#아이템 데이터
     
     return jsonify({'result': 'success', 'msg': '물품이 정상적으로 등록되었습니다.'})

@@ -41,12 +41,14 @@
             type: "POST",
             url: "/api/itemregist",
             data: {
+              item_type_give: 1,
+              item_url_give: 0,
               item_info_give: $("#itemInfo").val(),
               place_give: $("#place").val(),
               time_give: $("#time").val(),
               category_give: $("#category").val(),
               people_give: $("#people").val(),
-              link_give: $("#link").val(),
+              chatLink_give: $("#chatLink").val(),
             },
             success: function (response) {
               if (response["result"] == "success") {
@@ -303,9 +305,9 @@
                   />
                 </div>
                 <div class="flex-auto p-2 text-left">
-                  <label for="link">채팅방 링크</label>
+                  <label for="chatLink">채팅방 링크</label>
                   <input
-                    id="link"
+                    id="chatLink"
                     required
                     class="w-full rounded-md border border-[#e0e0e0]"
                   />

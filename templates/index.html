@@ -12,9 +12,9 @@
     ></script>
 
     <script>
-      function switchSignInUp() {
-        $("#signInForm")[0].style.display = "none";
-        $("#signUpForm")[0].style.display = "block";
+      function switchSignInUp(nowpage, beforepage) {
+        nowpage.style.display = "none";
+        beforepage.style.display = "block";
       }
 
       function register() {
@@ -114,7 +114,7 @@
             <button
               id="loginBtn"
               onclick="login()"
-              class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              class="flex w-full justify-center rounded-md bg-green-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             >
               로그인 하기
             </button>
@@ -125,8 +125,8 @@
           아직 계정이 없으신가요?
           <a
             id="registerBtn"
-            onclick="switchSignInUp()"
-            class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
+            onclick="switchSignInUp($('#signInForm')[0], $('#signUpForm')[0])"
+            class="font-semibold leading-6 text-green-600 hover:text-green-500"
             >가입하기!</a
           >
         </p>
@@ -198,11 +198,19 @@
             <button
               id="signUpBtn"
               onclick="register()"
-              class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              class="flex w-full justify-center rounded-md bg-green-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             >
               가입 하기
             </button>
           </div>
+          <p class="mt-10 text-center text-sm text-gray-500">
+            <a
+              id="returnBtn"
+              onclick="switchSignInUp($('#signUpForm')[0], $('#signInForm')[0])"
+              class="font-semibold leading-6 text-green-600 hover:text-green-500"
+              >로그인으로 돌아가기</a
+            >
+          </p>
         </div>
       </div>
     </div>

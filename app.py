@@ -2,6 +2,7 @@ from flask import Flask, jsonify, request, render_template
 SECRET_KEY = 'jungle'
 
 from pymongo import MongoClient
+
 import jwt
 import datetime
 import hashlib

@@ -1,4 +1,4 @@
-#!/Users/geumdohyeon/dev/krafton_jungle/JungleCarrot/.venv/bin/python3.12
+#!/Users/kimtaeseong/coding/JungleCarrot/JungleCarrot/.venv/bin/python3.11
 # -*- coding: utf-8 -*-
 import re
 import sys

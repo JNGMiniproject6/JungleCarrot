@@ -46,7 +46,7 @@ def api_login():
     if result is not None:
         payload = {
             'id' : id_receive,
-            'exp' : datetime.datetime.utcnow() + datetime.timedelta(seconds=5)
+            'exp' : datetime.datetime.utcnow() + datetime.timedelta(days=5)
         }
         token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
         

@@ -18,6 +18,23 @@
             .getElementsByTagName("body")[0]
             .classList.remove("overflow-y-hidden");
         };
+        function joinGroupBuy() {
+          console.log($("#itemName").text());
+          $.ajax({
+            type: "POST",
+            url: "/group_buy_join",
+            data: {
+              item_id_give: $("#itemName").text(),
+            },
+            success: function (response) {
+              if (response["result"] == "success") {
+                alert("공동구매에 참여되었습니다!");
+              } else {
+                alert("다음에 참여해주세요!");
+              }
+            },
+          });
+        }
       </script>
       <title>group_buy</title>
     </head>
@@ -259,7 +276,7 @@
 
             <a
               href="#"
-              onclick="closeModal('group_buy')"
+              onclick="joinGroupBuy()"
               class="text-white bg-green-600 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-base inline-flex items-center px-3 py-2.5 text-center mr-2"
             >
               참여하기

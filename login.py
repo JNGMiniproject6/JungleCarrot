@@ -21,10 +21,11 @@ def home():
    return render_template('test.html')
 
 
-@app.route('/group_buy_join',methods=['POST'])
+@app.route('/group_buy_join', methods=['POST'])
 def buy_join():
-   item = db.item.find_one()
-   people_list = item['user_id']
+   item_id_receive = request.form['item_id_give']
+   id_receive = request.form['id_give']
+   item = db.item.find_one({'item_id':item_id_receive})
    print(item) 
    print("추가 전 ", item['current_people'])
    db.item.update_one({}, {'$set': {'current_people': 0}}) # current_people 값 초기화

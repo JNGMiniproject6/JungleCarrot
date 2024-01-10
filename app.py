@@ -165,6 +165,7 @@ def buy_join():
 def api_item():
     ## 물건 db 컨테이너
     # item_id_receive = request.form['item_id_give']
+    item_place_receive = request.form['place_give']
     item_time_receive = request.form['time_give']
     # item_user_id_receive = request.form['item_user_id_give']
     item_info_receive = request.form['item_info_give']
@@ -179,6 +180,8 @@ def api_item():
         # 'id':item_id_receive,
         # 'user_id':item_user_id_receive,
         'info':item_info_receive,
+        'place':item_place_receive,
+        'time':item_time_receive,
         'category':item_category_receive,
         # 'current_people':item_current_people_receive,
         'max_people':item_max_people_receive,

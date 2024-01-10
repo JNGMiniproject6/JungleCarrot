@@ -21,7 +21,7 @@ def inital_db():
         'link':'https://www.naver.com', #카카오톡 오픈채팅 주소
         "place":'강의실',                 #만날 장소
         'time': '13시 30분',              #만날 시간
-        'item_label':"건조대 나눔합니다."    #나눔상품설명
+        'item_label':"건조대 1개 나눔합니다."    #나눔상품설명
     }
     db.item.insert_one(initial_item)    #item 컬렉션에 더미 데이터 추가
     print("db item 등록 완료!")

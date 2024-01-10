@@ -7,14 +7,21 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-  <script
-    type="text/javascript"
-    src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"
-  ></script>
+  <script type="text/javascript"
+    src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
 
   <title>Document</title>
 
   <script type="text/javascript">
+    const Sort = {
+      BY_ALL: "all",
+      BY_DETERGENT: 'detergent',
+      BY_TOILETRIES: 'toiletries',
+      BY_SNACK: 'snack',
+      BY_TISSUE: 'tissue'
+    };
+    let sortMode = Sort.BY_ALL;
+
     window.openModal = function (modalId) {
       document.getElementById(modalId).style.display = "block";
       document
@@ -28,6 +35,30 @@
         .getElementsByTagName("body")[0]
         .classList.remove("overflow-y-hidden");
     };
+    function changeSorter(newMode) {
+      if (sortMode == newMode) {
+        return
+      }
+
+      sortMode = newMode
+      showMovie()
+    }
+
+    function select_category() {
+      $.ajax({
+        type: "GET",
+        url: "/select_category",
+        data: {},
+        success: function (response) {
+          if (response['result'] == 'success') {
+            alert("카테고리")
+          } else {
+            alert('다음에 참여해주세요!')
+          }
+        }
+      });
+    }
+
     function join() {
       $.ajax({
         type: "POST",
@@ -42,7 +73,24 @@
         }
       });
     }
-    
+
+    function uploadItem(){
+      $.ajax({
+        type: "POST",
+        url: "/upload_item",
+        data: {},
+        success: function (response) {
+          if (response['result'] == 'success') {
+            alert("업로드 되었습니다!")
+          } else {
+            alert('실패!')
+          }
+        }
+      });
+    }
+
+
+
   </script>
 </head>
 
@@ -61,10 +109,11 @@
     onclick="openModal('register_share_item')">
     나눔 상품 등록하기
   </button>
-  <button class="bg-green-500 text-white rounded-md px-4 py-2 hover:bg-green-700 transition"
-    onclick="join()">
+  <button class="bg-green-500 text-white rounded-md px-4 py-2 hover:bg-green-700 transition" onclick="join()">
     참여하기
   </button>
+
+  
 
   <div id="my_item" class="fixed hidden z-50 inset-0 bg-gray-900 bg-opacity-60 overflow-y-auto h-full w-full px-4">
     <div class="relative top-40 mx-auto shadow-xl rounded-md bg-white max-w-md">

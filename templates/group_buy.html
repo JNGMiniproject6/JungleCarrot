@@ -23,13 +23,13 @@
             .getElementsByTagName("body")[0]
             .classList.remove("overflow-y-hidden");
         };
-        function joinGroupBuy() {
-          console.log($("#itemName").text());
+        function joinGroupBuy(itemName) {
+          console.log(itemName);
           $.ajax({
             type: "POST",
             url: "/group_buy_join",
             data: {
-              item_id_give: $("#itemName").text(),
+              item_id_give: itemName,
             },
             success: function (response) {
               if (response["result"] == "success") {
@@ -46,7 +46,6 @@
           var payload = atob(base64Payload);
           var result = JSON.parse(payload.toString());
           console.log(result["id"]);
-
           https: $.ajax({
             type: "POST",
             url: "/api/itemregist",
@@ -54,7 +53,7 @@
               item_type_give: 0,
               item_info_give: 0,
               item_url_give: $("#itemUrl").val(),
-              // user_id_give: $.cookie("mytoken"),
+              item_id_give: $("#itemName").val(),
               place_give: $("#place").val(),
               time_give: $("#time").val(),
               category_give: $("#category").val(),
@@ -142,16 +141,32 @@
               <p class="ml-4 text-lg">{{item['item_id']}}</p>
               <p class="ml-4 text-lg">{{item['item_info']}}</p>
             </div>
-            <!-- 오른쪽에 X 표시 -->
-            <div class="flex items-center justify-end flex-1">
+
+            <div class="flex items-center justify-start flex-1">
               {% if item['current_people'] == null %}
               <p class="ml-4 text-lg">0 / {{item['max_people']}}</p>
               {% elif item['current_people'] != null %}
               <p class="ml-4 text-lg">
                 {{item['current_people']}} / {{item['max_people']}}
               </p>
+
               {% endif %}
             </div>
+            <a
+              href="#"
+              onclick="joinGroupBuy($(this).parent().find('p').eq(1).text())"
+              class="text-white bg-green-600 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-base inline-flex items-center px-3 py-2.5 text-center mr-2"
+            >
+              참여하기
+            </a>
+            <a
+              href="#"
+              onclick="closeModal('group_buy')"
+              class="text-gray-900 bg-white hover:bg-gray-100 focus:ring-4 focus:ring-cyan-200 border border-gray-200 font-medium inline-flex items-center rounded-lg text-base px-3 py-2.5 text-center"
+              data-modal-toggle="delete-user-modal"
+            >
+              다음에 참여하기
+            </a>
           </div>
           {% endfor %}
         </div>
@@ -230,6 +245,14 @@
                   <label for="itemUrl">상품 링크</label>
                   <input
                     id="itemUrl"
+                    required
+                    class="w-full rounded-md border border-[#e0e0e0]"
+                  />
+                </div>
+                <div class="flex-auto p-2 text-left">
+                  <label for="itemName">제품명</label>
+                  <input
+                    id="itemName"
                     required
                     class="w-full rounded-md border border-[#e0e0e0]"
                   />

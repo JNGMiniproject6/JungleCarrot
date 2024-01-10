@@ -172,7 +172,7 @@ def buy_join():
          return jsonify({'result':'failure'})
    elif item['current_people'] < item['max_people']:
       people_up = item['current_people'] + 1
-      result = db.item.update_one({}, {'$set': {'current_people': people_up}})
+      result = db.item.update_one({'item_id':item_id_receive}, {'$set': {'current_people': people_up}})
       # people_list.append() # 사용자의 아이디 받아와서 리스트에 추가하기
       print("추가 후 ",people_up)
       if result.modified_count == 1:
@@ -191,6 +191,7 @@ def api_item():
     item_user_id_receive = request.form['user_id_give']
     item_info_receive = request.form['item_info_give']
     item_category_receive = request.form['category_give']
+    item_id_receive = request.form['item_id_give']
     # item_current_people_receive = request.form['item_current_people_give']
     item_max_people_receive = request.form['people_give']
     item_url_receive = request.form['item_url_give']
@@ -203,10 +204,11 @@ def api_item():
         'place':item_place_receive,
         'time':item_time_receive,
         'category':item_category_receive,
-        # 'current_people':item_current_people_receive,
-        'max_people':item_max_people_receive,
+        'current_people': 1,
+        'max_people':int(item_max_people_receive),
         'url':item_url_receive,
         'item_type':item_type_receive,
+        'item_id':item_id_receive,
         'link':chat_link_receive
         })#아이템 데이터
     

@@ -186,6 +186,8 @@ def buy_join():
    item_id_receive = request.form['item_id_give']
    user_id_receive = request.form['user_id_give']
 
+   item = db.item.find_one({'item_id':item_id_receive})
+   db.item.update_one({}, {'$set': {'current_people': 0}}) # current_people 값 초기화
    user_list = db.item.find_one({'user_id':user_id_receive,'item_id':item_id_receive},{'_id':0})
    
    kakao_link = db.item.find_one({'user_id':user_id_receive},{'_id':0})['link']
@@ -204,6 +206,7 @@ def buy_join():
 
       result = db.item.update_one({'item_id':item_id_receive}, {'$set': {'current_people': people_up}})
 
+      print(mail_list)
 
       msg = MIMEText(kakao_link)   # 메일의 내용
       msg['Subject'] = '공동구매를 위한 카카오톡 오픈 채팅 링크입니다.' # 메일의 제목
@@ -211,7 +214,6 @@ def buy_join():
       receiver = mail_list
       print(receiver)
       smtp.sendmail('dohyeon0518@gmail.com',receiver,msg.as_string())
-      smtp.quit()
       smtp.quit()
 
       if result.modified_count == 1:

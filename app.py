@@ -20,6 +20,10 @@ def home():
 def group_buy():
     return render_template("group_buy.html")
 
+@app.route('/share')
+def share():
+    return render_template("share.html")
+
 @app.route('/api/register', methods=['POST', 'GET'])
 def api_register():
         id_receive = request.form['id_give']
@@ -63,7 +67,7 @@ def api_valid():
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         userinfo = db.user.find_one({'id':payload['id']}, {'_id':0})
-        return render_template('group_buy.html')
+        return render_template('share.html')
         # return jsonify({'result':'success', 'nickname':userinfo['nick']})
     except jwt.ExpiredSignatureError:
         return jsonify({'result':'fail', 'msg':'로그인 시간이 만료되었습니다. '})

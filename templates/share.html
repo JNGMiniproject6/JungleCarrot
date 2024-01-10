@@ -1,472 +1,292 @@
 !<DOCTYPE html>
   <html lang="ko">
-    <head>
-      <meta charset="UTF-8" />
-      <meta title="viewport" content="width=device-width, initial-scale=1.0" />
-      <script src="https://cdn.tailwindcss.com"></script>
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-      <script>
-        window.openModal = function (modalId) {
-          document.getElementById(modalId).style.display = "block";
-          document
-            .getElementsByTagName("body")[0]
-            .classList.add("overflow-y-hidden");
-        };
-        window.closeModal = function (modalId) {
-          document.getElementById(modalId).style.display = "none";
-          document
-            .getElementsByTagName("body")[0]
-            .classList.remove("overflow-y-hidden");
-        };
-        function joinGroupBuy() {
-          console.log($("#itemName").text());
-          $.ajax({
-            type: "POST",
-            url: "/group_buy_join",
-            data: {
-              item_id_give: $("#itemName").text(),
-            },
-            success: function (response) {
-              if (response["result"] == "success") {
-                alert("공동구매에 참여되었습니다!");
-              } else {
-                alert("다음에 참여해주세요!");
-              }
-            },
-          });
-        }
-        function addShareItem() {
-          console.log($("#place").val());
-          $.ajax({
-            type: "POST",
-            url: "/api/itemregist",
-            data: {
-              item_info_give: $("#itemInfo").val(),
-              place_give: $("#place").val(),
-              time_give: $("#time").val(),
-              category_give: $("#category").val(),
-              people_give: $("#people").val(),
-              link_give: $("#link").val(),
-            },
-            success: function (response) {
-              if (response["result"] == "success") {
-                alert("나눔에 등록되었습니다!");
-              } else {
-                alert("다음에 등록해주세요!");
-              }
-            },
-          });
-        }
-      </script>
-      <title>share</title>
-    </head>
 
-    <body style="background-color: #fcf5ee">
-      <div id="bar" class="h-1/6">
-        <div
-          id="navBar"
-          class="max-w-5xl mx-auto bg-green-500 rounded-xl text-gray-900 p-5 h-20 flex justify-between items-center text-white"
-        >
-          <div class="flex items-center">
-            <p class="ml-4 text-lg"><a href="/group_buy">공동구매</a></p>
-            <p class="ml-4 text-lg"><a href="/share">나눔</a></p>
+  <head>
+    <meta charset="UTF-8" />
+    <meta title="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+      window.openModal = function (modalId) {
+        document.getElementById(modalId).style.display = "block";
+        document
+          .getElementsByTagName("body")[0]
+          .classList.add("overflow-y-hidden");
+      };
+      window.closeModal = function (modalId) {
+        document.getElementById(modalId).style.display = "none";
+        document
+          .getElementsByTagName("body")[0]
+          .classList.remove("overflow-y-hidden");
+      };
+      function joinGroupBuy() {
+        console.log($("#itemName").text());
+        $.ajax({
+          type: "POST",
+          url: "/group_buy_join",
+          data: {
+            item_id_give: $("#itemName").text(),
+          },
+          success: function (response) {
+            if (response["result"] == "success") {
+              alert("공동구매에 참여되었습니다!");
+            } else {
+              alert("다음에 참여해주세요!");
+            }
+          },
+        });
+      }
+      function addShareItem() {
+        console.log($("#place").val());
+        $.ajax({
+          type: "POST",
+          url: "/api/itemregist",
+          data: {
+            item_info_give: $("#itemInfo").val(),
+            place_give: $("#place").val(),
+            time_give: $("#time").val(),
+            category_give: $("#category").val(),
+            people_give: $("#people").val(),
+            link_give: $("#link").val(),
+          },
+          success: function (response) {
+            if (response["result"] == "success") {
+              alert("나눔에 등록되었습니다!");
+            } else {
+              alert("다음에 등록해주세요!");
+            }
+          },
+        });
+      }
+    </script>
+    <title>share</title>
+  </head>
+
+  <body style="background-color: #fcf5ee">
+    <div id="bar" class="h-1/6">
+      <div id="navBar"
+        class="max-w-5xl mx-auto bg-green-500 rounded-xl text-gray-900 p-5 h-20 flex justify-between items-center text-white">
+        <div class="flex items-center">
+          <p class="ml-4 text-lg"><a href="/group_buy">공동구매</a></p>
+          <p class="ml-4 text-lg"><a href="/share">나눔</a></p>
+        </div>
+        <div class="flex items-center">
+          <p class="text-lg mr-4 text-right" onclick="openModal('my_item')">
+            내 품목
+          </p>
+          <p class="text-lg text-right">로그아웃</p>
+        </div>
+      </div>
+      <div id="categoriesBar"
+        class="max-w-5xl mx-auto bg-green-300 rounded-xl text-gray-900 p-4 h-10 flex justify-between items-center">
+        <div class="flex items-center">
+          <p class="text-lg">전체</p>
+          <p class="ml-4 text-lg">세제</p>
+          <p class="ml-4 text-lg">세면도구</p>
+          <p class="ml-4 text-lg">간식</p>
+          <p class="ml-4 text-lg">휴지류</p>
+          <p class="ml-4 text-lg"></p>
+          <p class="ml-4 text-lg"></p>
+        </div>
+      </div>
+    </div>
+    <div id="contents" class="h-4/5 static">
+      <div id="contentLists"
+        class="max-w-5xl mx-auto items-center place-content-around gap-5 max-h-full overflow-y-auto relative">
+        {% for item in items %}
+        <div id="itemCards" class="h-48 bg-stone-200 mb-10 rounded-xl text-gray-900 p-4 flex items-center">
+          <!-- 왼쪽에 사진 -->
+          <div class="mr-4">
+            <img
+              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtQUYcHnhUK5aRxE6Yt8Rb_13am5qO8B9bXQ&usqp=CAU"
+              alt="사진" class="w-20 h-20 rounded-lg" />
           </div>
+
+          <!-- 중앙에 텍스트 -->
           <div class="flex items-center">
-            <p class="text-lg mr-4 text-right" onclick="openModal('my_item')">
-              내 품목
+            <p class="text-lg">
+              {{item['info']}}
             </p>
-            <p class="text-lg text-right">로그아웃</p>
+            {%if item['place'] == 'classroom' %}
+            <p class="ml-4 text-lg">강의실</p>
+            {% elif item['place'] == 'resturant' %}
+            <p class="ml-4 text-lg">식당</p>
+            {% elif item['place'] == 'home' %}
+            <p class="ml-4 text-lg">기숙사</p>
+            {% endif %}
+            <p class="ml-4 text-lg">{{item['time']}}</p>
+          </div>
+          <!-- 오른쪽에 X 표시 -->
+          <div class="flex items-center justify-end flex-1">
+            {% if item['current_people'] == null %}
+            <p class="ml-4 text-lg"> 0 / {{item['max_people']}}</p>
+            {% elif item['current_people'] != null %}
+            <p class="ml-4 text-lg"> {{item['current_people']}} / {{item['max_people']}}</p>
+            {% endif %}
           </div>
         </div>
-        <div
-          id="categoriesBar"
-          class="max-w-5xl mx-auto bg-green-300 rounded-xl text-gray-900 p-4 h-10 flex justify-between items-center"
-        >
-          <div class="flex items-center">
-            <p class="text-lg">전체</p>
-            <p class="ml-4 text-lg">세제</p>
-            <p class="ml-4 text-lg">세면도구</p>
-            <p class="ml-4 text-lg">간식</p>
-            <p class="ml-4 text-lg">휴지류</p>
-            <p class="ml-4 text-lg"></p>
-            <p class="ml-4 text-lg"></p>
+        {% endfor %}
+      </div>
+    </div>
+    <button
+      class="absolute bottom-20 right-1/4 bg-green-500 text-white text-4xl rounded-full px-4 py-2 hover:bg-green-600 shadow transition item-center"
+      onclick="openModal('addItemModal')">
+      +
+    </button>
+    <div id="addItemModal"
+      class="fixed hidden z-50 inset-0 bg-gray-900 bg-opacity-60 overflow-y-auto h-full w-full px-4">
+      <div class="relative top-40 mx-auto shadow-xl rounded-md bg-white max-w-md">
+        <div class="flex justify-end p-2">
+          <h2 class="text-lg font-semibold p-2">나눔 상품 등록하기</h2>
+          <button onclick="closeModal('addItemModal')" type="button"
+            class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd"
+                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                clip-rule="evenodd"></path>
+            </svg>
+          </button>
+        </div>
+
+        <div class="p-6 pt-0 text-center">
+          <div class="flex w-300 h-170 m-5 justify-center">
+            <form class="flex-auto p-2">
+              <div class="flex-auto p-2 text-left">
+                <label for="place">장소</label>
+                <select id="place">
+                  <option value="classroom">강의실</option>
+                  <option value="home">기숙사</option>
+                  <option value="resturant">식당</option>
+                </select>
+              </div>
+              <div class="flex-auto p-2 text-left">
+                <label for="time">시간</label>
+                <input id="time" required class="w-full rounded-md border border-[#e0e0e0]" />
+              </div>
+              <div class="flex-auto p-2 text-left">
+                <label for="category">카테고리</label>
+                <select id="category">
+                  <option value="item">생필품</option>
+                  <option value="food">음식</option>
+                  <option value="etc">기타</option>
+                </select>
+              </div>
+              <div class="flex-auto p-2 text-left">
+                <label for="people">인원수</label>
+                <input id="people" required class="w-full rounded-md border border-[#e0e0e0]" />
+              </div>
+              <div class="flex-auto p-2 text-left">
+                <label for="people">상품 설명</label>
+                <input id="itemInfo" required class="w-full rounded-md border border-[#e0e0e0]" />
+              </div>
+              <div class="flex-auto p-2 text-left">
+                <label for="link">채팅방 링크</label>
+                <input id="link" required class="w-full rounded-md border border-[#e0e0e0]" />
+              </div>
+            </form>
+            <div class="grid place-items-center">
+              <h3>오픈채팅방 만드는 법</h3>
+              <div>
+                1. 카카오톡> 오픈채팅탭> 우상단 채팅 만들기 버튼 누르기
+              </div>
+              <div>
+                2. 우상단 MY 버튼 > 나의 채팅방 영역의 만들기 버튼 누르기
+              </div>
+            </div>
           </div>
+
+          <a href="#" onclick="addShareItem(), closeModal('addItemModal')"
+            class="text-white bg-green-600 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-base inline-flex items-center px-3 py-2.5 text-center mr-2">
+            등록하기
+          </a>
+          <a href="#" onclick="closeModal('addItemModal')"
+            class="text-gray-900 bg-white hover:bg-gray-100 focus:ring-4 focus:ring-cyan-200 border border-gray-200 font-medium inline-flex items-center rounded-lg text-base px-3 py-2.5 text-center"
+            data-modal-toggle="delete-user-modal">
+            다음에 등록하기
+          </a>
         </div>
       </div>
-      <div id="contents" class="h-4/5 static">
-        <div
-          id="contentLists"
-          class="hidden max-w-5xl mx-auto items-center place-content-around gap-5 max-h-full overflow-y-auto relative"
-        >
-          <div
-            id="itemCards"
-            class="h-48 bg-stone-200 mb-10 rounded-xl text-gray-900 p-4 flex items-center"
-          >
-            <!-- 왼쪽에 사진 -->
-            <div class="mr-4">
-              <img
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtQUYcHnhUK5aRxE6Yt8Rb_13am5qO8B9bXQ&usqp=CAU"
-                alt="사진"
-                class="w-20 h-20 rounded-lg"
-              />
-            </div>
-
-            <!-- 중앙에 텍스트 -->
-            <div class="flex items-center">
-              <p class="text-lg">
-                사이트 :
-                <a
-                  href="https://www.coupang.com/vp/products/335833200?itemId=17982326014&vendorItemId=85139110125&pickType=COU_PICK&q=%EA%B3%A0%EC%96%91%EC%9D%B4&itemsCount=36&searchId=a507d60615584972bbbb21a7ad3b4dc0&rank=2&isAddedCart="
-                  target="_blank"
-                  >링크</a
-                >
-              </p>
-              <p class="ml-4 text-lg">품명 :</p>
-              <p class="ml-4 text-lg">가격 :</p>
-            </div>
-            <!-- 오른쪽에 X 표시 -->
-            <div class="flex items-center justify-end flex-1">
-              <p class="ml-4 text-lg">1/3</p>
-            </div>
-          </div>
-          <div
-            id="itemCards"
-            class="h-48 bg-stone-200 mb-10 rounded-xl text-gray-900 p-4 flex items-center"
-          >
-            <!-- 왼쪽에 사진 -->
-            <div class="mr-4">
-              <img
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtQUYcHnhUK5aRxE6Yt8Rb_13am5qO8B9bXQ&usqp=CAU"
-                alt="사진"
-                class="w-20 h-20 rounded-lg"
-              />
-            </div>
-
-            <!-- 중앙에 텍스트 -->
-            <div class="flex items-center">
-              <p class="text-lg">
-                사이트 :
-                <a
-                  href="https://www.coupang.com/vp/products/335833200?itemId=17982326014&vendorItemId=85139110125&pickType=COU_PICK&q=%EA%B3%A0%EC%96%91%EC%9D%B4&itemsCount=36&searchId=a507d60615584972bbbb21a7ad3b4dc0&rank=2&isAddedCart="
-                  target="_blank"
-                  >링크</a
-                >
-              </p>
-              <p class="ml-4 text-lg">품명 :</p>
-              <p class="ml-4 text-lg">가격 :</p>
-            </div>
-            <!-- 오른쪽에 X 표시 -->
-            <div class="flex items-center justify-end flex-1">
-              <p class="ml-4 text-lg">1/3</p>
-            </div>
-          </div>
-          <div
-            id="itemCards"
-            class="h-48 bg-stone-200 mb-10 rounded-xl text-gray-900 p-4 flex items-center"
-          >
-            <!-- 왼쪽에 사진 -->
-            <div class="mr-4">
-              <img
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtQUYcHnhUK5aRxE6Yt8Rb_13am5qO8B9bXQ&usqp=CAU"
-                alt="사진"
-                class="w-20 h-20 rounded-lg"
-              />
-            </div>
-
-            <!-- 중앙에 텍스트 -->
-            <div class="flex items-center">
-              <p class="text-lg">
-                사이트 :
-                <a
-                  href="https://www.coupang.com/vp/products/335833200?itemId=17982326014&vendorItemId=85139110125&pickType=COU_PICK&q=%EA%B3%A0%EC%96%91%EC%9D%B4&itemsCount=36&searchId=a507d60615584972bbbb21a7ad3b4dc0&rank=2&isAddedCart="
-                  target="_blank"
-                  >링크</a
-                >
-              </p>
-              <p class="ml-4 text-lg">품명 :</p>
-              <p class="ml-4 text-lg">가격 :</p>
-            </div>
-            <!-- 오른쪽에 X 표시 -->
-            <div class="flex items-center justify-end flex-1">
-              <p class="ml-4 text-lg">1/3</p>
-            </div>
-          </div>
-          <div
-            id="itemCards"
-            class="h-48 bg-stone-200 mb-10 rounded-xl text-gray-900 p-4 flex items-center"
-          >
-            <!-- 왼쪽에 사진 -->
-            <div class="mr-4">
-              <img
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtQUYcHnhUK5aRxE6Yt8Rb_13am5qO8B9bXQ&usqp=CAU"
-                alt="사진"
-                class="w-20 h-20 rounded-lg"
-              />
-            </div>
-
-            <!-- 중앙에 텍스트 -->
-            <div class="flex items-center">
-              <p class="text-lg">
-                사이트 :
-                <a
-                  href="https://www.coupang.com/vp/products/335833200?itemId=17982326014&vendorItemId=85139110125&pickType=COU_PICK&q=%EA%B3%A0%EC%96%91%EC%9D%B4&itemsCount=36&searchId=a507d60615584972bbbb21a7ad3b4dc0&rank=2&isAddedCart="
-                  target="_blank"
-                  >링크</a
-                >
-              </p>
-              <p class="ml-4 text-lg">품명 :</p>
-              <p class="ml-4 text-lg">가격 :</p>
-            </div>
-            <!-- 오른쪽에 X 표시 -->
-            <div class="flex items-center justify-end flex-1">
-              <p class="ml-4 text-lg">1/3</p>
-            </div>
-          </div>
+    </div>
+    <div id="my_item" class="fixed hidden z-50 inset-0 bg-gray-900 bg-opacity-60 overflow-y-auto h-full w-full px-4">
+      <div class="relative top-40 mx-auto shadow-xl rounded-md bg-white max-w-md">
+        <div class="flex justify-end p-2">
+          <h2 class="text-lg font-semibold p-2">내품목</h2>
+          <button onclick="closeModal('my_item')" type="button"
+            class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd"
+                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                clip-rule="evenodd"></path>
+            </svg>
+          </button>
         </div>
-      </div>
-      <button
-        class="absolute bottom-20 right-1/4 bg-green-500 text-white text-4xl rounded-full px-4 py-2 hover:bg-green-600 shadow transition item-center"
-        onclick="openModal('addItemModal')"
-      >
-        +
-      </button>
-      <div
-        id="addItemModal"
-        class="fixed hidden z-50 inset-0 bg-gray-900 bg-opacity-60 overflow-y-auto h-full w-full px-4"
-      >
-        <div
-          class="relative top-40 mx-auto shadow-xl rounded-md bg-white max-w-md"
-        >
-          <div class="flex justify-end p-2">
-            <h2 class="text-lg font-semibold p-2">나눔 상품 등록하기</h2>
-            <button
-              onclick="closeModal('addItemModal')"
-              type="button"
-              class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
-            >
-              <svg
-                class="w-5 h-5"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fill-rule="evenodd"
+
+        <div class="p-6 pt-0 text-center">
+          <div class="flex w-300 h-170 m-5 justify-center">
+            <div class="flex font-sans">
+              <div class="flex-none w-20 h-20 p-6 relative">
+                <img src="https://cdn-icons-png.flaticon.com/512/3130/3130357.png" alt=""
+                  class="absolute inset-0 w-30 h-20" loading="lazy" />
+              </div>
+              <div class="flex flex-wrap">
+                <h1 class="flex-auto text-xl font-semibold text-gray-900">
+                  쿠팡 휴지
+                </h1>
+                <div class="text-lg font-semibold text-black-500">
+                  11,100원
+                </div>
+                <div class="w-full flex-none text-sm font-medium text-black-700 mt-2">
+                  쿠팡 휴지 20EA
+                </div>
+                <div class="w-full flex-none text-sm text-slate-700">
+                  참여 인원 : 3 / 4
+                </div>
+              </div>
+            </div>
+            <button onclick="" type="button"
+              class="text-red-400 bg-transparent hover:text-red-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd"
                   d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                  clip-rule="evenodd"
-                ></path>
+                  clip-rule="evenodd"></path>
               </svg>
             </button>
           </div>
 
-          <div class="p-6 pt-0 text-center">
-            <div class="flex w-300 h-170 m-5 justify-center">
-              <form class="flex-auto p-2">
-                <div class="flex-auto p-2 text-left">
-                  <label for="place">장소</label>
-                  <select id="place">
-                    <option value="classroom">강의실</option>
-                    <option value="home">기숙사</option>
-                    <option value="resturant">식당</option>
-                  </select>
+          <div class="flex w-300 h-170 m-5 justify-center">
+            <div class="flex font-sans">
+              <div class="flex-none w-20 h-20 p-6 relative">
+                <img src="https://cdn-icons-png.flaticon.com/512/3130/3130357.png" alt=""
+                  class="absolute inset-0 w-30 h-20" loading="lazy" />
+              </div>
+              <div class="flex flex-wrap">
+                <h1 class="flex-auto text-xl font-semibold text-gray-900">
+                  쿠팡 휴지
+                </h1>
+                <div class="text-lg font-semibold text-black-500">
+                  11,100원
                 </div>
-                <div class="flex-auto p-2 text-left">
-                  <label for="time">시간</label>
-                  <input
-                    id="time"
-                    required
-                    class="w-full rounded-md border border-[#e0e0e0]"
-                  />
+                <div class="w-full flex-none text-sm font-medium text-black-700 mt-2">
+                  쿠팡 휴지 20EA
                 </div>
-                <div class="flex-auto p-2 text-left">
-                  <label for="category">카테고리</label>
-                  <select id="category">
-                    <option value="item">생필품</option>
-                    <option value="food">음식</option>
-                    <option value="etc">기타</option>
-                  </select>
-                </div>
-                <div class="flex-auto p-2 text-left">
-                  <label for="people">인원수</label>
-                  <input
-                    id="people"
-                    required
-                    class="w-full rounded-md border border-[#e0e0e0]"
-                  />
-                </div>
-                <div class="flex-auto p-2 text-left">
-                  <label for="people">상품 설명</label>
-                  <input
-                    id="itemInfo"
-                    required
-                    class="w-full rounded-md border border-[#e0e0e0]"
-                  />
-                </div>
-                <div class="flex-auto p-2 text-left">
-                  <label for="link">채팅방 링크</label>
-                  <input
-                    id="link"
-                    required
-                    class="w-full rounded-md border border-[#e0e0e0]"
-                  />
-                </div>
-              </form>
-              <div class="grid place-items-center">
-                <h3>오픈채팅방 만드는 법</h3>
-                <div>
-                  1. 카카오톡> 오픈채팅탭> 우상단 채팅 만들기 버튼 누르기
-                </div>
-                <div>
-                  2. 우상단 MY 버튼 > 나의 채팅방 영역의 만들기 버튼 누르기
+                <div class="w-full flex-none text-sm text-slate-700">
+                  참여 인원 : 1 / 4
                 </div>
               </div>
-            </div>
-
-            <a
-              href="#"
-              onclick="addShareItem(), closeModal('addItemModal')"
-              class="text-white bg-green-600 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-base inline-flex items-center px-3 py-2.5 text-center mr-2"
-            >
-              등록하기
-            </a>
-            <a
-              href="#"
-              onclick="closeModal('addItemModal')"
-              class="text-gray-900 bg-white hover:bg-gray-100 focus:ring-4 focus:ring-cyan-200 border border-gray-200 font-medium inline-flex items-center rounded-lg text-base px-3 py-2.5 text-center"
-              data-modal-toggle="delete-user-modal"
-            >
-              다음에 등록하기
-            </a>
-          </div>
-        </div>
-      </div>
-      <div
-        id="my_item"
-        class="fixed hidden z-50 inset-0 bg-gray-900 bg-opacity-60 overflow-y-auto h-full w-full px-4"
-      >
-        <div
-          class="relative top-40 mx-auto shadow-xl rounded-md bg-white max-w-md"
-        >
-          <div class="flex justify-end p-2">
-            <h2 class="text-lg font-semibold p-2">내품목</h2>
-            <button
-              onclick="closeModal('my_item')"
-              type="button"
-              class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
-            >
-              <svg
-                class="w-5 h-5"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fill-rule="evenodd"
-                  d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                  clip-rule="evenodd"
-                ></path>
-              </svg>
-            </button>
-          </div>
-
-          <div class="p-6 pt-0 text-center">
-            <div class="flex w-300 h-170 m-5 justify-center">
-              <div class="flex font-sans">
-                <div class="flex-none w-20 h-20 p-6 relative">
-                  <img
-                    src="https://cdn-icons-png.flaticon.com/512/3130/3130357.png"
-                    alt=""
-                    class="absolute inset-0 w-30 h-20"
-                    loading="lazy"
-                  />
-                </div>
-                <div class="flex flex-wrap">
-                  <h1 class="flex-auto text-xl font-semibold text-gray-900">
-                    쿠팡 휴지
-                  </h1>
-                  <div class="text-lg font-semibold text-black-500">
-                    11,100원
-                  </div>
-                  <div
-                    class="w-full flex-none text-sm font-medium text-black-700 mt-2"
-                  >
-                    쿠팡 휴지 20EA
-                  </div>
-                  <div class="w-full flex-none text-sm text-slate-700">
-                    참여 인원 : 3 / 4
-                  </div>
-                </div>
-              </div>
-              <button
-                onclick=""
-                type="button"
-                class="text-red-400 bg-transparent hover:text-red-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
-              >
-                <svg
-                  class="w-5 h-5"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    fill-rule="evenodd"
+              <button onclick="" type="button"
+                class="text-red-400 bg-transparent hover:text-red-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd"
                     d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                    clip-rule="evenodd"
-                  ></path>
+                    clip-rule="evenodd"></path>
                 </svg>
               </button>
             </div>
-
-            <div class="flex w-300 h-170 m-5 justify-center">
-              <div class="flex font-sans">
-                <div class="flex-none w-20 h-20 p-6 relative">
-                  <img
-                    src="https://cdn-icons-png.flaticon.com/512/3130/3130357.png"
-                    alt=""
-                    class="absolute inset-0 w-30 h-20"
-                    loading="lazy"
-                  />
-                </div>
-                <div class="flex flex-wrap">
-                  <h1 class="flex-auto text-xl font-semibold text-gray-900">
-                    쿠팡 휴지
-                  </h1>
-                  <div class="text-lg font-semibold text-black-500">
-                    11,100원
-                  </div>
-                  <div
-                    class="w-full flex-none text-sm font-medium text-black-700 mt-2"
-                  >
-                    쿠팡 휴지 20EA
-                  </div>
-                  <div class="w-full flex-none text-sm text-slate-700">
-                    참여 인원 : 1 / 4
-                  </div>
-                </div>
-                <button
-                  onclick=""
-                  type="button"
-                  class="text-red-400 bg-transparent hover:text-red-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
-                >
-                  <svg
-                    class="w-5 h-5"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      fill-rule="evenodd"
-                      d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                      clip-rule="evenodd"
-                    ></path>
-                  </svg>
-                </button>
-              </div>
-            </div>
           </div>
         </div>
       </div>
-      <!-- <div
+    </div>
+    <!-- <div
           id="itemInfoModal"
           class="fixed hidden z-50 inset-0 bg-gray-900 bg-opacity-60 overflow-y-auto h-full w-full px-4"
         >
@@ -551,6 +371,7 @@
             </div>
           </div>
         </div> -->
-    </body>
+  </body>
+
   </html>
 </DOCTYPE>

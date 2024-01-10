@@ -1,10 +1,13 @@
 from flask import Flask, jsonify, request, render_template
 SECRET_KEY = 'jungle'
 
+from bson.json_util import dumps
+
 from pymongo import MongoClient
 import jwt
 import datetime
 import hashlib
+import json
 
 db = MongoClient('localhost', 27017).jcarrot
 
@@ -64,13 +67,23 @@ def api_valid():
     
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-        userinfo = db.user.find_one({'id':payload['id']}, {'_id':0})
-        return render_template('group_buy.html')
+        # userinfo = db.user.find_one({'id':payload['id']}, {'_id':0})
+        items = list(db.item.find({'item_type' : 0})) 
+        return render_template('group_buy.html', items = items)
         # return jsonify({'result':'success', 'nickname':userinfo['nick']})
     except jwt.ExpiredSignatureError:
         return jsonify({'result':'fail', 'msg':'로그인 시간이 만료되었습니다. '})
     except jwt.exceptions.DecodeError:
         return jsonify({'result':'fail', 'msg':'로그인 정보가 존제하지 않습니다.'})
+    
+@app.route('/api/build',methods=['GET'])
+def api_card_build():
+    items = list(db.item.find({'item_type' : 0})) 
+    print(items)
+
+    return jsonify({'result':'success','items':items})
+           
+    
     
 if __name__ == '__main__':
 	app.run(host = '0.0.0.0',

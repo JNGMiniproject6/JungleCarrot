@@ -18,7 +18,10 @@ def inital_db():
         'max_people': 3,                #공동구매에 참여할 인원
         'url': 'https://www.naver.com', #품목의 구매주소
         'item_type':0,                  #품목이 나눔, 공동구매인지 확인
-        'link':'https://www.naver.com'  #카카오톡 오픈채팅 주소
+        'link':'https://www.naver.com', #카카오톡 오픈채팅 주소
+        "place":'강의실',                 #만날 장소
+        'time': '13시 30분',              #만날 시간
+        'item_label':"건조대 나눔합니다."    #나눔상품설명
     }
     db.item.insert_one(initial_item)    #item 컬렉션에 더미 데이터 추가
     print("db item 등록 완료!")
@@ -28,5 +31,6 @@ def inital_db():
 
 if __name__ == '__main__':
     # db.item.drop()    #user 컬렉션 삭제
+    # db.user.drop()
 
     inital_db()

@@ -59,5 +59,17 @@ def buy_join():
    else:
       return jsonify({'result':'failure'})
 
+@app.route('/select_category',methods=['GET'])
+def select_category():
+   
+   return jsonify({'result':'success'})
+
+@app.route('/upload_item',methods=['POST'])
+def upload_item():
+   
+   db.item.insert_one(initial_item)
+
+   return jsonify({'result':'success'})
+
 if __name__ == '__main__':
     app.run('0.0.0.0',port=8000,debug=True)

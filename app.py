@@ -21,7 +21,6 @@ db = MongoClient('localhost', 27017).jcarrot
 app = Flask(__name__)
 
 
-
 ##웹 스크래핑
 def scrape_coupang(url):
     response = requests.get(url)
@@ -165,25 +164,26 @@ def buy_join():
 @app.route('/api/itemregist', methods=['POST'])
 def api_item():
     ## 물건 db 컨테이너
-    item_id_receive = request.form['item_id_give']
-    item_user_id_receive = request.form['item_user_id_give']
+    # item_id_receive = request.form['item_id_give']
+    item_time_receive = request.form['time_give']
+    # item_user_id_receive = request.form['item_user_id_give']
     item_info_receive = request.form['item_info_give']
-    item_category_receive = request.form['item_category_give']
-    item_current_people_receive = request.form['item_current_people_give']
-    item_max_people_receive = request.form['item_max_people_give']
-    item_url_receive = request.form['item_url_give']
-    item_type_receive = request.form['item_type_give']
-    item_link_receive = request.form['item_link_give']
+    item_category_receive = request.form['category_give']
+    # item_current_people_receive = request.form['item_current_people_give']
+    item_max_people_receive = request.form['people_give']
+    # item_url_receive = request.form['item_url_give']
+    # item_type_receive = request.form['item_type_give']
+    item_link_receive = request.form['link_give']
     
     db.item.insert_one({
-        'id':item_id_receive,
-        'user_id':item_user_id_receive,
+        # 'id':item_id_receive,
+        # 'user_id':item_user_id_receive,
         'info':item_info_receive,
         'category':item_category_receive,
-        'current_people':item_current_people_receive,
+        # 'current_people':item_current_people_receive,
         'max_people':item_max_people_receive,
-        'url':item_url_receive,
-        'type':item_type_receive,
+        # 'url':item_url_receive,
+        # 'type':item_type_receive,
         'link':item_link_receive
         })#아이템 데이터
     

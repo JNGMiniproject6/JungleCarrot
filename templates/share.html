@@ -1,67 +1,69 @@
 !<DOCTYPE html>
   <html lang="ko">
+    <head>
+      <meta charset="UTF-8" />
+      <meta title="viewport" content="width=device-width, initial-scale=1.0" />
+      <script src="https://cdn.tailwindcss.com"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+      <script>
+        window.openModal = function (modalId) {
+          document.getElementById(modalId).style.display = "block";
+          document
+            .getElementsByTagName("body")[0]
+            .classList.add("overflow-y-hidden");
+        };
+        window.closeModal = function (modalId) {
+          document.getElementById(modalId).style.display = "none";
+          document
+            .getElementsByTagName("body")[0]
+            .classList.remove("overflow-y-hidden");
+        };
+        function joinGroupBuy() {
+          console.log($("#itemName").text());
+          $.ajax({
+            type: "POST",
+            url: "/group_buy_join",
+            data: {
+              item_id_give: $("#itemName").text(),
+            },
+            success: function (response) {
+              if (response["result"] == "success") {
+                alert("공동구매에 참여되었습니다!");
+              } else {
+                alert("다음에 참여해주세요!");
+              }
+            },
+          });
+        }
+        function addShareItem() {
+          console.log($("#place").val());
+          $.ajax({
+            type: "POST",
+            url: "/api/itemregist",
+            data: {
+              item_type_give: 1,
+              item_url_give: 0,
+              item_info_give: $("#itemInfo").val(),
+              place_give: $("#place").val(),
+              time_give: $("#time").val(),
+              category_give: $("#category").val(),
+              people_give: $("#people").val(),
+              chatLink_give: $("#chatLink").val(),
+            },
+            success: function (response) {
+              if (response["result"] == "success") {
+                alert("나눔에 등록되었습니다!");
+              } else {
+                alert("다음에 등록해주세요!");
+              }
+            },
+          });
+        }
+      </script>
+      <title>share</title>
+    </head>
 
-  <head>
-    <meta charset="UTF-8" />
-    <meta title="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script>
-      window.openModal = function (modalId) {
-        document.getElementById(modalId).style.display = "block";
-        document
-          .getElementsByTagName("body")[0]
-          .classList.add("overflow-y-hidden");
-      };
-      window.closeModal = function (modalId) {
-        document.getElementById(modalId).style.display = "none";
-        document
-          .getElementsByTagName("body")[0]
-          .classList.remove("overflow-y-hidden");
-      };
-      function joinGroupBuy() {
-        console.log($("#itemName").text());
-        $.ajax({
-          type: "POST",
-          url: "/group_buy_join",
-          data: {
-            item_id_give: $("#itemName").text(),
-          },
-          success: function (response) {
-            if (response["result"] == "success") {
-              alert("공동구매에 참여되었습니다!");
-            } else {
-              alert("다음에 참여해주세요!");
-            }
-          },
-        });
-      }
-      function addShareItem() {
-        console.log($("#place").val());
-        $.ajax({
-          type: "POST",
-          url: "/api/itemregist",
-          data: {
-            item_info_give: $("#itemInfo").val(),
-            place_give: $("#place").val(),
-            time_give: $("#time").val(),
-            category_give: $("#category").val(),
-            people_give: $("#people").val(),
-            link_give: $("#link").val(),
-          },
-          success: function (response) {
-            if (response["result"] == "success") {
-              alert("나눔에 등록되었습니다!");
-              location.reload();
-            } else {
-              alert("다음에 등록해주세요!");
-            }
-          },
-        });
-      }
-    </script>
-    <title>share</title>
-  </head>
+  
 
   <body style="background-color: #fcf5ee">
     <div id="bar" class="h-1/6">
@@ -272,6 +274,46 @@
                 </div>
                 <div class="w-full flex-none text-sm text-slate-700">
                   참여 인원 : 1 / 4
+                <div class="flex-auto p-2 text-left">
+                  <label for="category">카테고리</label>
+                  <select id="category">
+                    <option value="item">생필품</option>
+                    <option value="food">음식</option>
+                    <option value="etc">기타</option>
+                  </select>
+                </div>
+                <div class="flex-auto p-2 text-left">
+                  <label for="people">인원수</label>
+                  <input
+                    id="people"
+                    required
+                    class="w-full rounded-md border border-[#e0e0e0]"
+                  />
+                </div>
+                <div class="flex-auto p-2 text-left">
+                  <label for="people">상품 설명</label>
+                  <input
+                    id="itemInfo"
+                    required
+                    class="w-full rounded-md border border-[#e0e0e0]"
+                  />
+                </div>
+                <div class="flex-auto p-2 text-left">
+                  <label for="chatLink">채팅방 링크</label>
+                  <input
+                    id="chatLink"
+                    required
+                    class="w-full rounded-md border border-[#e0e0e0]"
+                  />
+                </div>
+              </form>
+              <div class="grid place-items-center">
+                <h3>오픈채팅방 만드는 법</h3>
+                <div>
+                  1. 카카오톡> 오픈채팅탭> 우상단 채팅 만들기 버튼 누르기
+                </div>
+                <div>
+                  2. 우상단 MY 버튼 > 나의 채팅방 영역의 만들기 버튼 누르기
                 </div>
               </div>
               <button onclick="" type="button"

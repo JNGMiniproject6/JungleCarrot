@@ -184,12 +184,15 @@ def api_valid():
 @app.route('/group_buy_join', methods=['POST'])
 def buy_join():
    item_id_receive = request.form['item_id_give']
+   user_id_receive = request.form['user_id_give']
+
    print(item_id_receive)
 #    id_receive = request.form['id_give']
    item = db.item.find_one({'item_id':item_id_receive})
    print(item)
    print("추가 전 ", item['current_people'])
    db.item.update_one({}, {'$set': {'current_people': 0}}) # current_people 값 초기화
+   db.item.update_one({'item_id': item_id_receive}, {'$push': {'user_id':user_id_receive}})
    if item['current_people'] == item['max_people'] - 1:
       people_up = item['current_people'] + 1
       result = db.item.update_one({}, {'$set': {'current_people': people_up}})

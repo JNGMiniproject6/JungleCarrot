@@ -24,12 +24,17 @@
             .classList.remove("overflow-y-hidden");
         };
         function joinShare(itemName) {
+          var token = $.cookie("mytoken");
+          var base64Payload = token.split(".")[1];
+          var payload = atob(base64Payload);
+          var result = JSON.parse(payload.toString());
           console.log(itemName);
           $.ajax({
             type: "POST",
             url: "/share_join",
             data: {
               item_id_give: itemName,
+              user_id_give: result["id"],
             },
             success: function (response) {
               if (response["result"] == "success") {

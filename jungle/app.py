@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, render_template
+from flask import Flask, jsonify, request, render_template, abort
 SECRET_KEY = 'jungle'
 
 from pymongo import MongoClient
@@ -8,59 +8,25 @@ import datetime
 import hashlib
 import smtplib
 from email.mime.text import MIMEText
-
 smtp = smtplib.SMTP('smtp.gmail.com',587)
 smtp.ehlo()
 smtp.starttls()
 smtp.login('dohyeon0518@gmail.com','gqkk rfgy ymuz kmuk')
-from bs4 import BeautifulSoup
-import requests
 
 db = MongoClient('localhost', 27017).jcarrot
 
 app = Flask(__name__)
 
-
-##웹 스크래핑
-def scrape_coupang(url):
-    response = requests.get(url)
-    html = response.text
-    soup = BeautifulSoup(html, 'html.parser')
-
-    og_title = soup.find("meta", property="og:title")['content']
-    prod_image_detail = soup.find("div", class_="prod-image__detail")
-    total_price = soup.find("span", class_="total-price")
-
-    return og_title, prod_image_detail, total_price
-
-def scrape_naver_smartstore(url):
-    response = requests.get(url)
-    html = response.text
-    soup = BeautifulSoup(html, 'html.parser')
-
-    info_1 = soup.find("div", class_="_22kNQuEXmb _copyable")
-    info_2 = soup.find("div", class_="bd_1uFKu")
-    info_3 = soup.find("div", class_="_1LY7DqCnwR")
-
-    return info_1, info_2, info_3
-
-##사이트 추가 해야됨
-
-@app.route('/api/site_scraping')
-def index():
-    url = "https://www.coupang.com/vp/products/335833200?itemId=17982326014&vendorItemId=85139110125&pickType=COU_PICK&q=%EA%B3%A0%EC%96%91%EC%9D%B4&itemsCount=36&searchId=170c23c33ddc475a8a994d1960670660&rank=1&isAddedCart="
-    site_identifier = url.split('/')[2]
-
-    if site_identifier == "www.coupang.com":
-        og_title, prod_image_detail, total_price = scrape_coupang(url)
-        return render_template('coupang.html', og_title=og_title, prod_image_detail=prod_image_detail, total_price=total_price)
-
-    elif site_identifier == "smartstore.naver.com":
-        info_1, info_2, info_3 = scrape_naver_smartstore(url)
-        return render_template('naver_smartstore.html', info_1=info_1, info_2=info_2, info_3=info_3)
-
+def token_check():
+    print(request.url)
+    token = request.cookies.get('mytoken')
+    print(token)
+    if request.url != "http://localhost:8000/":
+        if request.url != "http://localhost:8000/api/login":
+          if not token:
+            abort(401)
     else:
-        return "Unsupported site"
+        pass
     
 ##회원가입 api
 @app.route('/')
@@ -69,11 +35,17 @@ def home():
 
 @app.route('/group_buy')
 def group_buy():
-    return render_template("group_buy.html")
+    items = list(db.item.find({'item_type':"0"}, {'_id':0}))
+    print(items)
+
+    return render_template("group_buy.html", items=items)
 
 @app.route('/share')
 def share():
-    return render_template("share.html")
+    items = list(db.item.find({'item_type':"1"},{'_id':0}))
+    print(items)
+
+    return render_template("share.html",items=items)
 
 @app.route('/api/register', methods=['POST', 'GET'])
 def api_register():
@@ -109,6 +81,10 @@ def api_login():
         return jsonify({'result': 'success', 'token': token})
     else:
         return jsonify({'result': 'fail', 'msg': '아이디/비밀번호가 일치하지 않습니다.'})
+
+
+@app.route('/api/item_identify')
+
 
 
 @app.route('/api/main', methods=['GET'])
@@ -162,9 +138,7 @@ def buy_join():
          return jsonify({'result':'failure'})
    else:
       return jsonify({'result':'failure'})
-    
-    
-    
+
 @app.route('/api/itemregist', methods=['POST'])
 def api_item():
     ## 물건 db 컨테이너
@@ -176,9 +150,9 @@ def api_item():
     item_category_receive = request.form['category_give']
     # item_current_people_receive = request.form['item_current_people_give']
     item_max_people_receive = request.form['people_give']
-    # item_url_receive = request.form['item_url_give']
-    # item_type_receive = request.form['item_type_give']
-    item_link_receive = request.form['link_give']
+    item_url_receive = request.form['item_url_give']
+    item_type_receive = request.form['item_type_give']
+    chat_link_receive = request.form['chatLink_give']
     
     db.item.insert_one({
         # 'id':item_id_receive,
@@ -189,14 +163,12 @@ def api_item():
         'category':item_category_receive,
         # 'current_people':item_current_people_receive,
         'max_people':item_max_people_receive,
-        # 'url':item_url_receive,
-        # 'type':item_type_receive,
-        'link':item_link_receive
+        'url':item_url_receive,
+        'item_type':item_type_receive,
+        'link':chat_link_receive
         })#아이템 데이터
     
     return jsonify({'result': 'success', 'msg': '물품이 정상적으로 등록되었습니다.'})
-    
-    
     
 if __name__ == '__main__':
 	app.run(host = '0.0.0.0',

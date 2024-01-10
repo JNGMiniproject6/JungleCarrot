@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat App</title>
+</head>
+<body>
+    <ul id="messages"></ul>
+    <form id="form" action="">
+        <input id="input" autocomplete="off" /><button>Send</button>
+    </form>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.2.0/socket.io.js"></script>
+    <script>
+        var socket = io.connect('http://' + document.domain + ':' + location.port);
+    
+        // 서버에서 전달받은 _id 값을 저장할 변수
+        var messageId = '';
+    
+        socket.on('message', function(msg) {
+            var ul = document.getElementById('messages');
+            var li = document.createElement('li');
+            li.appendChild(document.createTextNode(msg));
+            ul.appendChild(li);
+        });
+    
+        // 서버에서 전달받은 _id 값을 저장
+        socket.on('new_message_id', function(data) {
+            messageId = data._id;
+        });
+    
+        document.getElementById('form').onsubmit = function() {
+            // _id 값을 가진 객체 생성
+            var dataWithId = {
+                '_id': messageId,
+                'message': document.getElementById('input').value
+            };
+            // Socket.IO를 통해 서버에 메시지 전송
+            socket.emit('message', dataWithId);
+            // 입력 필드 초기화
+            document.getElementById('input').value = '';
+            return false;
+        };
+    </script>
+</body>
+</html>

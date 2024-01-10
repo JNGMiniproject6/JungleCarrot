@@ -52,7 +52,7 @@
             if (response["result"] == "success") {
               $.cookie("mytoken", response["token"], { path: "/" });
               console.log(response["token"]);
-              window.location.replace("/api/main");
+              window.location.replace("/group_buy");
               alert("로그인 완료!");
             } else {
               alert(response["msg"]);

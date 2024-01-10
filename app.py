@@ -192,7 +192,9 @@ def buy_join():
    db.item.update_one({}, {'$set': {'current_people': 0}}) # current_people 값 초기화
    if item['current_people'] == item['max_people'] - 1:
       people_up = item['current_people'] + 1
-      result = db.item.update_one({}, {'$set': {'current_people': people_up}})
+      print("!@#")
+      print(people_up)
+      result = db.item.update_one({'item_id':item_id_receive}, {'$set': {'current_people': people_up}})
       # people_list.append() # 사용자의 아이디 받아와서 리스트에 추가하기
       print("추가 후 ",people_up)
       print("GMAIL 전송하기")
@@ -200,7 +202,7 @@ def buy_join():
       msg['Subject'] = '공동구매를 위한 카카오톡 오픈 채팅 링크입니다.' # 메일의 제목
       receiver = ['arevolvera@gmail.com','gold6219@naver.com','moorow0729@hufs.ac.kr'] # 전송할 메일 주소의 리스트
    
-      smtp.sendmail('dohyeon0518@gmail.com',receiver,msg.as_string())
+    #   smtp.sendmail('dohyeon0518@gmail.com',receiver,msg.as_string())
       smtp.quit()
 
       if result.modified_count == 1:
@@ -230,6 +232,8 @@ def share_join():
    db.item.update_one({}, {'$set': {'current_people': 0}}) # current_people 값 초기화
    if item['current_people'] == item['max_people'] - 1:
       people_up = item['current_people'] + 1
+      print(people_up)
+      print("!!!@#")
       result = db.item.update_one({}, {'$set': {'current_people': people_up}})
       # people_list.append() # 사용자의 아이디 받아와서 리스트에 추가하기
       print("추가 후 ",people_up)
@@ -238,7 +242,7 @@ def share_join():
       msg['Subject'] = '공동구매를 위한 카카오톡 오픈 채팅 링크입니다.' # 메일의 제목
       receiver = ['arevolvera@gmail.com','gold6219@naver.com','moorow0729@hufs.ac.kr'] # 전송할 메일 주소의 리스트
    
-      smtp.sendmail('dohyeon0518@gmail.com',receiver,msg.as_string())
+    #   smtp.sendmail('dohyeon0518@gmail.com',receiver,msg.as_string())
       smtp.quit()
 
       if result.modified_count == 1:

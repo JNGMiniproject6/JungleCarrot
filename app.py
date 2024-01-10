@@ -155,6 +155,25 @@ def api_item():
     
     return jsonify({'result': 'success', 'msg': '물품이 정상적으로 등록되었습니다.'})
     
+@app.route('/api/shareSort',methods=['GET'])
+def shareSort():
+    sortMode = request.args.get('sortMode', 'all')
+
+    # sortMode2 = request.form['sortMode']
+    print(sortMode)
+    if sortMode == 'all':
+        print('all')
+    elif sortMode == 'detergent':
+        print('detergent')
+    elif sortMode == 'toiletries':
+        print('toiletries')
+    elif sortMode == 'snack':
+        print('snack')
+    elif sortMode == 'tissue':
+        print('tissue')
+
+    return jsonify({'result':'success'})
+
 if __name__ == '__main__':
 	app.run(host = '0.0.0.0',
 					port = 8000, 

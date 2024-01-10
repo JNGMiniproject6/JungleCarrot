@@ -10,7 +10,7 @@ def inital_db():
         'name':'홍길동'               #유저의 이름
     }
     initial_item = {
-        'item_id':'생필품',           #품목의 아이디
+        'item_id':'휴지',           #품목의 아이디
         'user_id': ['a','b','c'],       #공동구매에 참여할 인원 리스트
         'item_info': '생필품',            #품목의 정보
         'category':'생필품',              #품목의 카테고리

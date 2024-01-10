@@ -60,6 +60,20 @@
             },
           });
         }
+        function sortCard(sortMode){
+          $.ajax({
+            type:"GET",
+            url:'/api/shareSort',
+            data:{sortMode:sortMode},
+            success: function (response){
+              if (response['result'] == 'success'){
+                console.log('정렬되었습니다.');
+              }else{
+                console.log("정렬 X!!");
+              }
+            }
+          })
+        }
       </script>
       <title>share</title>
     </head>
@@ -86,11 +100,11 @@
           class="max-w-5xl mx-auto bg-green-300 rounded-xl text-gray-900 p-4 h-10 flex justify-between items-center"
         >
           <div class="flex items-center">
-            <p class="text-lg">전체</p>
-            <p class="ml-4 text-lg">세제</p>
-            <p class="ml-4 text-lg">세면도구</p>
-            <p class="ml-4 text-lg">간식</p>
-            <p class="ml-4 text-lg">휴지류</p>
+            <p class="text-lg" onclick="sortCard('all')">전체</p>
+            <p class="ml-4 text-lg" onclick="sortCard('detergent')">세제</p>
+            <p class="ml-4 text-lg" onclick="sortCard('toiletries')">세면도구</p>
+            <p class="ml-4 text-lg" onclick="sortCard('snack')">간식</p>
+            <p class="ml-4 text-lg" onclick="sortCard('tissue')">휴지류</p>
             <p class="ml-4 text-lg"></p>
             <p class="ml-4 text-lg"></p>
           </div>
@@ -118,13 +132,7 @@
             <!-- 중앙에 텍스트 -->
             <div class="flex items-center">
               <p class="text-lg">{{item['info']}}</p>
-              {%if item['place'] == 'classroom' %}
-              <p class="ml-4 text-lg">강의실</p>
-              {% elif item['place'] == 'resturant' %}
-              <p class="ml-4 text-lg">식당</p>
-              {% elif item['place'] == 'home' %}
-              <p class="ml-4 text-lg">기숙사</p>
-              {% endif %}
+              <p class="ml-4 text-lg">{{item['place']}}</p>
               <p class="ml-4 text-lg">{{item['time']}}</p>
             </div>
             <!-- 오른쪽에 X 표시 -->
@@ -182,9 +190,9 @@
                 <div class="flex-auto p-2 text-left">
                   <label for="place">장소</label>
                   <select id="place">
-                    <option value="classroom">강의실</option>
-                    <option value="home">기숙사</option>
-                    <option value="resturant">식당</option>
+                    <option value="강의실">강의실</option>
+                    <option value="기숙사">기숙사</option>
+                    <option value="식당">식당</option>
                   </select>
                 </div>
                 <div class="flex-auto p-2 text-left">
@@ -198,9 +206,10 @@
                 <div class="flex-auto p-2 text-left">
                   <label for="category">카테고리</label>
                   <select id="category">
-                    <option value="item">생필품</option>
-                    <option value="food">음식</option>
-                    <option value="etc">기타</option>
+                    <option value="세제">세제</option>
+                    <option value="세면도구">세면도구</option>
+                    <option value="간식">간식</option>
+                    <option value="휴지류">휴지류</option>
                   </select>
                 </div>
                 <div class="flex-auto p-2 text-left">

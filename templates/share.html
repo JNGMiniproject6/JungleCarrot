@@ -6,6 +6,10 @@
       <script src="https://cdn.tailwindcss.com"></script>
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
       <script>
+        $(document).ready(function () {
+
+        });
+
         window.openModal = function (modalId) {
           document.getElementById(modalId).style.display = "block";
           document
@@ -60,19 +64,24 @@
             },
           });
         }
-        function sortCard(sortMode){
-          $.ajax({
-            type:"GET",
-            url:'/api/shareSort',
-            data:{sortMode:sortMode},
-            success: function (response){
-              if (response['result'] == 'success'){
-                console.log('정렬되었습니다.');
-              }else{
-                console.log("정렬 X!!");
-              }
-            }
-          })
+        // function sortCard(sortMode){
+        //   $('#contentLists').empty();
+        //   $.ajax({
+        //     type:"GET",
+        //     url:'/api/shareSort',
+        //     data:{sortMode:sortMode},
+        //     success: function (response){
+        //       console.log("정렬되라!");
+        //     }
+        //   });
+        // }
+        function deleteCookie(name) {
+          document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:01 GMT;";
+        }
+        function logout() {
+          deleteCookie("mytoken");
+          window.location.href = "/";
+          alert("로그아웃 되었습니다!");
         }
       </script>
       <title>share</title>
@@ -92,7 +101,7 @@
             <p class="text-lg mr-4 text-right" onclick="openModal('my_item')">
               내 품목
             </p>
-            <p class="text-lg text-right">로그아웃</p>
+            <p class="text-lg text-right"><a onclick="logout()">로그아웃</a></p>
           </div>
         </div>
         <div
@@ -100,11 +109,11 @@
           class="max-w-5xl mx-auto bg-green-300 rounded-xl text-gray-900 p-4 h-10 flex justify-between items-center"
         >
           <div class="flex items-center">
-            <p class="text-lg" onclick="sortCard('all')">전체</p>
-            <p class="ml-4 text-lg" onclick="sortCard('detergent')">세제</p>
-            <p class="ml-4 text-lg" onclick="sortCard('toiletries')">세면도구</p>
-            <p class="ml-4 text-lg" onclick="sortCard('snack')">간식</p>
-            <p class="ml-4 text-lg" onclick="sortCard('tissue')">휴지류</p>
+            <p class="text-lg"><a href="/share">전체</a></p>
+            <p class="ml-4 text-lg"><a href="/share/det">세제</a></p>
+            <p class="ml-4 text-lg"><a href="/share/tol">세면도구</a></p>
+            <p class="ml-4 text-lg"><a href="/share/snack">간식</a></p>
+            <p class="ml-4 text-lg"><a href="/share/tissue">휴지류</a></p>
             <p class="ml-4 text-lg"></p>
             <p class="ml-4 text-lg"></p>
           </div>

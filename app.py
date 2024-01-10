@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, render_template
+from flask import Flask, jsonify, request, render_template, redirect, url_for
 SECRET_KEY = 'jungle'
 
 from pymongo import MongoClient
@@ -29,12 +29,60 @@ def group_buy():
 
     return render_template("group_buy.html", items=items)
 
+@app.route('/group_buy/det')
+def group_buyDet():
+    items = list(db.item.find({'item_type':"0",'category':'세제'},{'_id':0}))
+
+    return render_template("group_buy.html",items=items)
+
+@app.route('/group_buy/tol')
+def group_buyTol():
+    items = list(db.item.find({'item_type':"0",'category':'세면도구'},{'_id':0}))
+
+    return render_template("group_buy.html",items=items)
+
+@app.route('/group_buy/snack')
+def group_buySnack():
+    items = list(db.item.find({'item_type':"0",'category':'간식'},{'_id':0}))
+
+    return render_template("group_buy.html",items=items)
+
+@app.route('/group_buy/tissue')
+def group_buyTissue():
+    items = list(db.item.find({'item_type':"0",'category':'휴지류'},{'_id':0}))
+
+    return render_template("group_buy.html",items=items)
+
 @app.route('/share')
 def share():
     items = list(db.item.find({'item_type':"1"},{'_id':0}))
-    print(items)
 
     return render_template("share.html",items=items)
+
+@app.route('/share/det')
+def shareDet():
+    items = list(db.item.find({'item_type':"1",'category':'세제'},{'_id':0}))
+
+    return render_template("share.html",items=items)
+
+@app.route('/share/tol')
+def shareTol():
+    items = list(db.item.find({'item_type':"1",'category':'세면도구'},{'_id':0}))
+
+    return render_template("share.html",items=items)
+
+@app.route('/share/snack')
+def shareSnack():
+    items = list(db.item.find({'item_type':"1",'category':'간식'},{'_id':0}))
+
+    return render_template("share.html",items=items)
+
+@app.route('/share/tissue')
+def shareTissue():
+    items = list(db.item.find({'item_type':"1",'category':'휴지류'},{'_id':0}))
+
+    return render_template("share.html",items=items)
+
 
 @app.route('/api/register', methods=['POST', 'GET'])
 def api_register():
@@ -154,26 +202,12 @@ def api_item():
         })#아이템 데이터
     
     return jsonify({'result': 'success', 'msg': '물품이 정상적으로 등록되었습니다.'})
+
+@app.route('/api/openMyItem')
+def openMyItem():
     
-@app.route('/api/shareSort',methods=['GET'])
-def shareSort():
-    sortMode = request.args.get('sortMode', 'all')
-
-    # sortMode2 = request.form['sortMode']
-    print(sortMode)
-    if sortMode == 'all':
-        print('all')
-    elif sortMode == 'detergent':
-        print('detergent')
-    elif sortMode == 'toiletries':
-        print('toiletries')
-    elif sortMode == 'snack':
-        print('snack')
-    elif sortMode == 'tissue':
-        print('tissue')
-
     return jsonify({'result':'success'})
-
+    
 if __name__ == '__main__':
 	app.run(host = '0.0.0.0',
 					port = 8000, 

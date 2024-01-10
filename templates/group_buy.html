@@ -59,6 +59,14 @@
             },
           });
         }
+        function deleteCookie(name) {
+          document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:01 GMT;";
+        }
+        function logout() {
+          deleteCookie("mytoken");
+          window.location.href = "/";
+          alert("로그아웃 되었습니다!");
+        }
       </script>
       <title>group_buy</title>
     </head>
@@ -76,7 +84,7 @@
             <p class="text-lg mr-4 text-right" onclick="openModal('my_item')">
               내 품목
             </p>
-            <p class="text-lg text-right">로그아웃</p>
+            <p class="text-lg text-right"><a onclick="logout()">로그아웃</a></p>
           </div>
         </div>
         <div

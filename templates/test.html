@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+<<<<<<< HEAD
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+  <script type="text/javascript"
+    src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+
+  <title>Document</title>
+
+  <script type="text/javascript">
+    const Sort = {
+      BY_ALL: "all",
+      BY_DETERGENT: 'detergent',
+      BY_TOILETRIES: 'toiletries',
+      BY_SNACK: 'snack',
+      BY_TISSUE: 'tissue'
+    };
+    let sortMode = Sort.BY_ALL;
+
+    window.openModal = function (modalId) {
+      document.getElementById(modalId).style.display = "block";
+      document
+        .getElementsByTagName("body")[0]
+        .classList.add("overflow-y-hidden");
+    };
+
+    window.closeModal = function (modalId) {
+      document.getElementById(modalId).style.display = "none";
+      document
+        .getElementsByTagName("body")[0]
+        .classList.remove("overflow-y-hidden");
+    };
+    function changeSorter(newMode) {
+      if (sortMode == newMode) {
+        return
+      }
+
+      sortMode = newMode
+      showMovie()
+    }
+
+    function select_category() {
+      $.ajax({
+        type: "GET",
+        url: "/select_category",
+        data: {},
+        success: function (response) {
+          if (response['result'] == 'success') {
+            alert("카테고리")
+          } else {
+            alert('다음에 참여해주세요!')
+          }
+        }
+      });
+    }
+
+    function join() {
+      $.ajax({
+        type: "POST",
+        url: "/group_buy_join",
+        data: {},
+        success: function (response) {
+          if (response['result'] == 'success') {
+            alert("공동구매에 참여되었습니다!")
+          } else {
+            alert('다음에 참여해주세요!')
+          }
+        }
+      });
+    }
+
+    function uploadItem(){
+      $.ajax({
+        type: "POST",
+        url: "/upload_item",
+        data: {},
+        success: function (response) {
+          if (response['result'] == 'success') {
+            alert("업로드 되었습니다!")
+          } else {
+            alert('실패!')
+          }
+        }
+      });
+    }
+
+
+
+  </script>
+</head>
+
+<body>
+  <button class="bg-green-500 text-white rounded-md px-4 py-2 hover:bg-green-700 transition"
+    onclick="openModal('group_buy')">
+    공동구매하기
+  </button>
+
+  <button class="bg-green-500 text-white rounded-md px-4 py-2 hover:bg-green-700 transition"
+    onclick="openModal('my_item')">
+    내 품목
+  </button>
+
+  <button class="bg-green-500 text-white rounded-md px-4 py-2 hover:bg-green-700 transition"
+    onclick="openModal('register_share_item')">
+    나눔 상품 등록하기
+  </button>
+  <button class="bg-green-500 text-white rounded-md px-4 py-2 hover:bg-green-700 transition" onclick="join()">
+    참여하기
+  </button>
+
+  
+
+  <div id="my_item" class="fixed hidden z-50 inset-0 bg-gray-900 bg-opacity-60 overflow-y-auto h-full w-full px-4">
+    <div class="relative top-40 mx-auto shadow-xl rounded-md bg-white max-w-md">
+      <div class="flex justify-end p-2">
+        <h2 class="text-lg font-semibold p-2">내품목</h2>
+        <button onclick="closeModal('my_item')" type="button"
+          class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd"
+              d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+              clip-rule="evenodd"></path>
+          </svg>
+        </button>
+      </div>
+
+      <div class="p-6 pt-0 text-center">
+        <div class="flex w-300 h-170 m-5 justify-center">
+          <div class="flex font-sans">
+            <div class="flex-none w-20 h-20 p-6 relative">
+              <img src="https://cdn-icons-png.flaticon.com/512/3130/3130357.png" alt=""
+                class="absolute inset-0 w-30 h-20" loading="lazy" />
+            </div>
+            <div class="flex flex-wrap">
+              <h1 class="flex-auto text-xl font-semibold text-gray-900">
+                쿠팡 휴지
+              </h1>
+              <div class="text-lg font-semibold text-black-500">11,100원</div>
+              <div class="w-full flex-none text-sm font-medium text-black-700 mt-2">
+                쿠팡 휴지 20EA
+              </div>
+              <div class="w-full flex-none text-sm text-slate-700">
+                참여 인원 : 3 / 4
+              </div>
+            </div>
+          </div>
+          <button onclick="" type="button"
+            class="text-red-400 bg-transparent hover:text-red-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd"
+                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                clip-rule="evenodd"></path>
+            </svg>
+          </button>
+        </div>
+
+        <div class="flex w-300 h-170 m-5 justify-center">
+          <div class="flex font-sans">
+            <div class="flex-none w-20 h-20 p-6 relative">
+              <img src="https://cdn-icons-png.flaticon.com/512/3130/3130357.png" alt=""
+                class="absolute inset-0 w-30 h-20" loading="lazy" />
+            </div>
+            <div class="flex flex-wrap">
+              <h1 class="flex-auto text-xl font-semibold text-gray-900">
+                쿠팡 휴지
+              </h1>
+              <div class="text-lg font-semibold text-black-500">11,100원</div>
+              <div class="w-full flex-none text-sm font-medium text-black-700 mt-2">
+                쿠팡 휴지 20EA
+              </div>
+              <div class="w-full flex-none text-sm text-slate-700">
+                참여 인원 : 1 / 4
+              </div>
+            </div>
+            <button onclick="" type="button"
+              class="text-red-400 bg-transparent hover:text-red-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd"
+                  d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                  clip-rule="evenodd"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="register_share_item"
+    class="fixed hidden z-50 inset-0 bg-gray-900 bg-opacity-60 overflow-y-auto h-full w-full px-4">
+    <div class="relative top-40 mx-auto shadow-xl rounded-md bg-white max-w-md">
+      <div class="flex justify-end p-2">
+        <h2 class="text-lg font-semibold p-2">나눔 상품 등록하기</h2>
+        <button onclick="closeModal('register_share_item')" type="button"
+          class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd"
+              d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+              clip-rule="evenodd"></path>
+          </svg>
+        </button>
+      </div>
+
+      <div class="p-6 pt-0 text-center">
+        <div class="flex w-300 h-170 m-5 justify-center">
+          <form class="flex-auto p-2">
+            <div class="flex-auto p-2 text-left">
+              <label for="place">장소</label>
+              <select id="place">
+                <option value="classroom">강의실</option>
+                <option value="home">기숙사</option>
+                <option value="resturant">식당</option>
+              </select>
+            </div>
+            <div class="flex-auto p-2 text-left">
+              <label for="time">시간</label>
+              <input id="time" required class="w-full rounded-md border border-[#e0e0e0]" />
+            </div>
+            <div class="flex-auto p-2 text-left">
+              <label for="category">카테고리</label>
+              <select id="category">
+                <option value="item">생필품</option>
+                <option value="food">음식</option>
+                <option value="etc">기타</option>
+              </select>
+            </div>
+            <div class="flex-auto p-2 text-left">
+              <label for="people">인원수</label>
+              <input id="people" required class="w-full rounded-md border border-[#e0e0e0]" />
+            </div>
+            <div class="flex-auto p-2 text-left">
+              <label for="link">채팅방 링크</label>
+              <input id="link" required class="w-full rounded-md border border-[#e0e0e0]" />
+            </div>
+          </form>
+          <div class="grid place-items-center">
+            <h3>오픈채팅방 만드는 법</h3>
+            <div>1. 카카오톡> 오픈채팅탭> 우상단 채팅 만들기 버튼 누르기</div>
+            <div>
+              2. 우상단 MY 버튼 > 나의 채팅방 영역의 만들기 버튼 누르기
+            </div>
+          </div>
+        </div>
+
+        <a href="#" onclick="closeModal('register_share_item')"
+          class="text-white bg-green-600 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-base inline-flex items-center px-3 py-2.5 text-center mr-2">
+          등록하기
+        </a>
+        <a href="#" onclick="closeModal('register_share_item')"
+          class="text-gray-900 bg-white hover:bg-gray-100 focus:ring-4 focus:ring-cyan-200 border border-gray-200 font-medium inline-flex items-center rounded-lg text-base px-3 py-2.5 text-center"
+          data-modal-toggle="delete-user-modal">
+          다음에 등록하기
+        </a>
+      </div>
+    </div>
+  </div>
+=======
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <title>Document</title>
+
+    <script type="text/javascript">
+        window.openModal = function (modalId) {
+            document.getElementById(modalId).style.display = 'block'
+            document.getElementsByTagName('body')[0].classList.add('overflow-y-hidden')
+        }
+
+        window.closeModal = function (modalId) {
+            document.getElementById(modalId).style.display = 'none'
+            document.getElementsByTagName('body')[0].classList.remove('overflow-y-hidden')
+        }
+    </script>
+</head>
+
+<body>
+
+    <button class="bg-green-500 text-white rounded-md px-4 py-2 hover:bg-green-700 transition"
+        onclick="openModal('group_buy')">
+        공동구매하기
+    </button>
+
+    <button class="bg-green-500 text-white rounded-md px-4 py-2 hover:bg-green-700 transition"
+        onclick="openModal('my_item')">
+        내 품목
+    </button>
+
+    <button class="bg-green-500 text-white rounded-md px-4 py-2 hover:bg-green-700 transition"
+        onclick="openModal('register_share_item')">
+        나눔 상품 등록하기
+    </button>
+
+    <div id="group_buy" class="fixed hidden z-50 inset-0 bg-gray-900 bg-opacity-60 overflow-y-auto h-full w-full px-4 ">
+        <div class="relative top-40 mx-auto shadow-xl rounded-md bg-white max-w-md">
+            <div class="flex justify-end p-2">
+                <h2 class="text-lg font-semibold p-2">공동구매하기</h2>
+                <button onclick="closeModal('group_buy')" type="button"
+                    class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd"
+                            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                            clip-rule="evenodd"></path>
+                    </svg>
+                </button>
+            </div>
+            
+            <div class="p-6 pt-0 text-center">
+                <div class="flex w-300 h-170 m-5 justify-center">
+                    <div class="flex font-sans">
+                        <div class="flex-none w-20 h-20 p-6 relative">
+                            <img src="https://cdn-icons-png.flaticon.com/512/3130/3130357.png" alt=""
+                                class="absolute inset-0 w-30 h-20" loading="lazy" />
+                        </div>
+                        <form class="flex-auto p-2">
+                            <div class="flex flex-wrap">
+                                <h1 class="flex-auto text-xl font-semibold text-gray-900">
+                                    쿠팡 휴지
+                                </h1>
+                                <div class="text-lg font-semibold text-black-500">
+                                    11,100원
+                                </div>
+                                <div class="w-full flex-none text-sm font-medium text-black-700 mt-2">
+                                    쿠팡 휴지 20EA
+                                </div>
+                            </div>
+
+                            <p class="text-sm text-slate-700">
+                                참여 인원 : 3 / 4
+                            </p>
+                        </form>
+                    </div>
+                </div>
+
+                <a href="#" onclick="closeModal('group_buy')"
+                    class="text-white bg-green-600 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-base inline-flex items-center px-3 py-2.5 text-center mr-2">
+                    참여하기
+                </a>
+                <a href="#" onclick="closeModal('group_buy')"
+                    class="text-gray-900 bg-white hover:bg-gray-100 focus:ring-4 focus:ring-cyan-200 border border-gray-200 font-medium inline-flex items-center rounded-lg text-base px-3 py-2.5 text-center"
+                    data-modal-toggle="delete-user-modal">
+                    다음에 참여하기
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div id="my_item" class="fixed hidden z-50 inset-0 bg-gray-900 bg-opacity-60 overflow-y-auto h-full w-full px-4 ">
+        <div class="relative top-40 mx-auto shadow-xl rounded-md bg-white max-w-md">
+
+            <div class="flex justify-end p-2">
+                <h2 class="text-lg font-semibold p-2">내품목</h2>
+                <button onclick="closeModal('my_item')" type="button"
+                    class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd"
+                            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                            clip-rule="evenodd"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="p-6 pt-0 text-center">
+                <div class="flex w-300 h-170 m-5 justify-center">
+                    <div class="flex font-sans">
+                        <div class="flex-none w-20 h-20 p-6 relative">
+                            <img src="https://cdn-icons-png.flaticon.com/512/3130/3130357.png" alt=""
+                                class="absolute inset-0 w-30 h-20" loading="lazy" />
+                        </div>
+                        <div class="flex flex-wrap">
+                            <h1 class="flex-auto text-xl font-semibold text-gray-900">
+                                쿠팡 휴지
+                            </h1>
+                            <div class="text-lg font-semibold text-black-500">
+                                11,100원
+                            </div>
+                            <div class="w-full flex-none text-sm font-medium text-black-700 mt-2">
+                                쿠팡 휴지 20EA
+                            </div>
+                            <div class="w-full flex-none text-sm text-slate-700">
+                                참여 인원 : 3 / 4
+                            </div>
+                        </div>
+                    </div>
+                    <button onclick="" type="button"
+                        class="text-red-400 bg-transparent hover:text-red-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd"
+                                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                clip-rule="evenodd"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="flex w-300 h-170 m-5 justify-center">
+                    <div class="flex font-sans">
+                        <div class="flex-none w-20 h-20 p-6 relative">
+                            <img src="https://cdn-icons-png.flaticon.com/512/3130/3130357.png" alt=""
+                                class="absolute inset-0 w-30 h-20" loading="lazy" />
+                        </div>
+                        <div class="flex flex-wrap">
+                            <h1 class="flex-auto text-xl font-semibold text-gray-900">
+                                쿠팡 휴지
+                            </h1>
+                            <div class="text-lg font-semibold text-black-500">
+                                11,100원
+                            </div>
+                            <div class="w-full flex-none text-sm font-medium text-black-700 mt-2">
+                                쿠팡 휴지 20EA
+                            </div>
+                            <div class="w-full flex-none text-sm text-slate-700">
+                                참여 인원 : 1 / 4
+                            </div>
+                        </div>
+                        <button onclick="" type="button"
+                            class="text-red-400 bg-transparent hover:text-red-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd"
+                                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                    clip-rule="evenodd"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div id="register_share_item"
+        class="fixed hidden z-50 inset-0 bg-gray-900 bg-opacity-60 overflow-y-auto h-full w-full px-4 ">
+        <div class="relative top-40 mx-auto shadow-xl rounded-md bg-white max-w-md">
+            <div class="flex justify-end p-2">
+                <h2 class="text-lg font-semibold p-2">나눔 상품 등록하기</h2>
+                <button onclick="closeModal('register_share_item')" type="button"
+                    class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd"
+                            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                            clip-rule="evenodd"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="p-6 pt-0 text-center">
+                <div class="flex w-300 h-170 m-5 justify-center">
+                    <form class="flex-auto p-2">
+                        <div class="flex-auto p-2 text-left">
+                            <label for="place">장소</label>
+                            <select id="place">
+                                <option value="classroom">강의실</option>
+                                <option value="home">기숙사</option>
+                                <option value="resturant">식당</option>
+                            </select>
+                        </div>
+                        <div class="flex-auto p-2 text-left">
+                            <label for="time">시간</label>
+                            <input id="time" required class="w-full rounded-md border border-[#e0e0e0]">
+                        </div>
+                        <div class="flex-auto p-2 text-left">
+                            <label for="category">카테고리</label>
+                            <select id="category">
+                                <option value="item">생필품</option>
+                                <option value="food">음식</option>
+                                <option value="etc">기타</option>
+                            </select>
+                        </div>
+                        <div class="flex-auto p-2 text-left">
+                            <label for="people">인원수</label>
+                            <input id="people" required class="w-full rounded-md border border-[#e0e0e0]">
+                        </div>
+                        <div class="flex-auto p-2 text-left">
+                            <label for="link">채팅방 링크</label>
+                            <input id="link" required class="w-full rounded-md border border-[#e0e0e0]">
+                        </div>
+                    </form>
+                    <div class="grid place-items-center">
+                        <h3>오픈채팅방 만드는 법</h3>
+                        <div>1. 카카오톡>
+                            오픈채팅탭>
+                            우상단 채팅 만들기 버튼 누르기
+                        </div>
+                        <div>
+                            2. 우상단 MY 버튼 > 나의 채팅방 영역의 만들기 버튼 누르기
+                        </div>
+                    </div>
+                </div>
+
+                <a href="#" onclick="closeModal('register_share_item')"
+                    class="text-white bg-green-600 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-base inline-flex items-center px-3 py-2.5 text-center mr-2">
+                    등록하기
+                </a>
+                <a href="#" onclick="closeModal('register_share_item')"
+                    class="text-gray-900 bg-white hover:bg-gray-100 focus:ring-4 focus:ring-cyan-200 border border-gray-200 font-medium inline-flex items-center rounded-lg text-base px-3 py-2.5 text-center"
+                    data-modal-toggle="delete-user-modal">
+                    다음에 등록하기
+                </a>
+            </div>
+        </div>
+    </div>
+
+>>>>>>> 460ca188258fd88131f3efbd5d90bf1ab1473863
+</body>
+
+</html>

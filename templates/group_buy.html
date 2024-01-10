@@ -5,6 +5,11 @@
       <meta title="viewport" content="width=device-width, initial-scale=1.0" />
       <script src="https://cdn.tailwindcss.com"></script>
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+      <script
+        type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"
+      ></script>
+
       <script>
         window.openModal = function (modalId) {
           document.getElementById(modalId).style.display = "block";
@@ -36,18 +41,26 @@
           });
         }
         function addGroupBuyItem() {
-          $.ajax({
+          var token = $.cookie("mytoken");
+          var base64Payload = token.split(".")[1];
+          var payload = atob(base64Payload);
+          var result = JSON.parse(payload.toString());
+          console.log(result["id"]);
+
+          https: $.ajax({
             type: "POST",
             url: "/api/itemregist",
             data: {
               item_type_give: 0,
               item_info_give: 0,
               item_url_give: $("#itemUrl").val(),
+              // user_id_give: $.cookie("mytoken"),
               place_give: $("#place").val(),
               time_give: $("#time").val(),
               category_give: $("#category").val(),
               people_give: $("#people").val(),
               chatLink_give: $("#chatLink").val(),
+              user_id_give: result["id"],
             },
             success: function (response) {
               if (response["result"] == "success") {
@@ -120,7 +133,6 @@
                 class="w-20 h-20 rounded-lg"
               />
             </div>
-
             <!-- 중앙에 텍스트 -->
             <div class="flex items-center">
               <p class="text-lg">
@@ -386,88 +398,84 @@
           </div>
         </div>
       </div>
-      <!-- <div
-        id="itemInfoModal"
-        class="fixed hidden z-50 inset-0 bg-gray-900 bg-opacity-60 overflow-y-auto h-full w-full px-4"
-      >
+
+      <!-- <div>    
         <div
-          class="relative top-40 mx-auto shadow-xl rounded-md bg-white max-w-md"
-        >
-          <div class="flex justify-end p-2">
-            <h2 class="text-lg font-semibold p-2">공동구매하기</h2>
-            <button
-              onclick="closeModal('addItemModal')"
-              type="button"
-              class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
-            >
-              <svg
-                class="w-5 h-5"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
+        id="itemInfoModal"
+        class="fixed hidden z-50 inset-0 bg-gray-900 bg-opacity-60 overflow-y-auto h-full w-full px-4">
+         
+          <div
+            class="relative top-40 mx-auto shadow-xl rounded-md bg-white max-w-md"
+          >
+            <div class="flex justify-end p-2">
+              <h2 class="text-lg font-semibold p-2">공동 구매하기</h2>
+              <button
+                onclick="closeModal('itemInfoModal')"
+                type="button"
+                class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
               >
-                <path
-                  fill-rule="evenodd"
-                  d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                  clip-rule="evenodd"
-                ></path>
-              </svg>
-            </button>
-          </div>
-
-          <div id="itemsToBuy" class="p-6 pt-0 text-center">
-            <div class="flex w-300 h-170 m-5 justify-center">
-              <div class="flex font-sans">
-                <div class="flex-none w-20 h-20 p-6 relative">
-                  <img
-                    src="https://cdn-icons-png.flaticon.com/512/3130/3130357.png"
-                    alt=""
-                    class="absolute inset-0 w-30 h-20"
-                    loading="lazy"
-                  />
-                </div>
-                <form class="flex-auto p-2">
-                  <div id="itemsToBuyDetails" class="flex flex-wrap">
-                    <h1
-                      id="itemName"
-                      class="flex-auto text-xl font-semibold text-gray-900"
-                    >
-                      쿠팡 휴지
-                    </h1>
-                    <div
-                      id="itemPrice"
-                      class="text-lg font-semibold text-black-500"
-                    >
-                      11,100원
-                    </div>
-                    <div
-                      id="itemQuantity"
-                      class="w-full flex-none text-sm font-medium text-black-700 mt-2"
-                    >
-                      쿠팡 휴지 20EA
-                    </div>
-                  </div>
-
-                  <p class="text-sm text-slate-700">참여 인원 : 3 / 4</p>
-                </form>
-              </div>
+                <svg
+                  class="w-5 h-5"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                    clip-rule="evenodd"
+                  ></path>
+                </svg>
+              </button>
             </div>
+    
+            <div id="itemToBuy" class="p-6 pt-0 text-center">
+              <div class="flex w-300 h-170 m-5 justify-center">
+                <div class="flex font-sans">
+                  <div class="flex-none w-20 h-20 p-6 relative">
+                    <img
+                      src="https://cdn-icons-png.flaticon.com/512/3130/3130357.png"
+                      alt=""
+                      class="absolute inset-0 w-30 h-20"
+                      loading="lazy"
+                    />
+                  </div>
+                  <form class="flex-auto p-2">
+                    <div id="itemsToBuyDetails" class="flex flex-wrap">
+                      <h1
+                        id="itemName"
+                        class="flex-auto text-xl font-semibold text-gray-900"
+                      >
+                        쿠팡 휴지
+                      </h1>
+                      <div
+                        id="itemPrice"
+                        class="text-lg font-semibold text-black-500"
+                      >
+                        11,100원
+                      </div>
+                      <div
+                        id="itemQuantity"
+                        class="w-full flex-none text-sm font-medium text-black-700 mt-2"
+                      >
+                        쿠팡 휴지 20EA
+                      </div>
+                    </div>
 
-            <a
-              href="#"
-              onclick="joinGroupBuy()"
-              class="text-white bg-green-600 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-base inline-flex items-center px-3 py-2.5 text-center mr-2"
-            >
-              참여하기
-            </a>
-            <a
-              href="#"
-              onclick="closeModal('group_buy')"
-              class="text-gray-900 bg-white hover:bg-gray-100 focus:ring-4 focus:ring-cyan-200 border border-gray-200 font-medium inline-flex items-center rounded-lg text-base px-3 py-2.5 text-center"
-              data-modal-toggle="delete-user-modal"
-            >
-              다음에 참여하기
-            </a>
+                    <p class="text-sm text-slate-700">
+                      <p class="ml-4 text-lg"></p>
+                      <p class="ml-4 text-lg">참여 인원 : 3 / 4</p>
+                    </p>
+                    </p>
+                  
+                  </form>
+                </div>
+              </div>
+              
+              
+              
+            </div>
+         
           </div>
         </div>
       </div> -->

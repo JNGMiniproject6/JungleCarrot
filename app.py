@@ -17,17 +17,20 @@ def home():
 
 @app.route('/api/register', methods=['POST', 'GET'])
 def api_register():
-        id_receive = request.form['id_give']
-        pw_receive = request.form['pw_give']
-        name_receive = request.form['name_give']
-        email_receive = request.form['email_give']
-        print("id_receive", id_receive)
+    id_receive = request.form['id_give']
+    pw_receive = request.form['pw_give']
+    name_receive = request.form['name_give']
+    email_receive = request.form['email_give']
+    print("id_receive", id_receive)
     
+    if db.user.find_one({'user_id':id_receive}) is None:
         pw_hash = hashlib.sha256(pw_receive.encode('utf-8')).hexdigest()
     
         db.user.insert_one({'user_id':id_receive, 'pw':pw_hash,'gmail':email_receive, 'name':name_receive})
         
         return jsonify({'result': 'success', 'msg': '회원가입이 완료되었습니다.'})
+    else:
+        return jsonify({'result':'fail','msg':'회원가입한 이력이 있습니다.'})
  
 @app.route('/api/login', methods=['POST'])
 def api_login():
@@ -40,7 +43,7 @@ def api_login():
     if result is not None:
         payload = {
             'id' : id_receive,
-            'exp' : datetime.datetime.utcnow() + datetime.timedelta(seconds=5)
+            'exp' : datetime.datetime.utcnow() + datetime.timedelta(seconds=60)
         }
 
         token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
@@ -49,7 +52,7 @@ def api_login():
     else:
         return jsonify({'result': 'fail', 'msg': '아이디/비밀번호가 일치하지 않습니다.'})
 
-@app.route('/api/nick', methods=['GET'])
+@app.route('/api/main', methods=['GET'])
 def api_valid():
     token_receive = request.cookies.get('mytoken')
     

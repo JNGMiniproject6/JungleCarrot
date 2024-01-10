@@ -5,6 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
 
     <title>Document</title>
 
@@ -18,7 +21,10 @@
             document.getElementById(modalId).style.display = 'none'
             document.getElementsByTagName('body')[0].classList.remove('overflow-y-hidden')
         }
-        
+        function logout() {
+            $.removeCookie('mytoken',{path:'/'});
+            window.location.replace("/");
+        }
     </script>
 </head>
 
@@ -38,6 +44,10 @@
         onclick="openModal('register_share_item')">
         나눔 상품 등록하기
     </button>
+    <button class="bg-green-500 text-white rounded-md px-4 py-2 hover:bg-green-700 transition"
+        onclick="logout()">
+        로그아웃
+    </button>
 
     <div id="group_buy" class="fixed hidden z-50 inset-0 bg-gray-900 bg-opacity-60 overflow-y-auto h-full w-full px-4 ">
         <div class="relative top-40 mx-auto shadow-xl rounded-md bg-white max-w-md">
@@ -52,7 +62,7 @@
                     </svg>
                 </button>
             </div>
-            
+
             <div class="p-6 pt-0 text-center">
                 <div class="flex w-300 h-170 m-5 justify-center">
                     <div class="flex font-sans">

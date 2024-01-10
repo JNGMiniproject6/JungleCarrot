@@ -124,6 +124,7 @@
           class="max-w-5xl mx-auto items-center place-content-around gap-5 max-h-full overflow-y-auto relative"
         >
           {% for item in items %}
+          {% if item['current_people'] != item['max_people'] %}
           <div
             id="itemCards"
             class="h-48 bg-stone-200 mb-10 rounded-xl text-gray-900 p-4 flex items-center"
@@ -172,6 +173,7 @@
               다음에 참여하기
             </a>
           </div>
+          {% endif %}
           {% endfor %}
         </div>
       </div>

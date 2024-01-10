@@ -24,22 +24,16 @@
             .classList.remove("overflow-y-hidden");
         };
         function joinGroupBuy(itemName) {
-          var token = $.cookie("mytoken");
-          var base64Payload = token.split(".")[1];
-          var payload = atob(base64Payload);
-          var result = JSON.parse(payload.toString());
           console.log(itemName);
           $.ajax({
             type: "POST",
             url: "/group_buy_join",
             data: {
-              user_id_give: result["id"],
               item_id_give: itemName,
             },
             success: function (response) {
               if (response["result"] == "success") {
                 alert("공동구매에 참여되었습니다!");
-                location.reload();
               } else {
                 alert("다음에 참여해주세요!");
               }
@@ -124,6 +118,7 @@
           class="max-w-5xl mx-auto items-center place-content-around gap-5 max-h-full overflow-y-auto relative"
         >
           {% for item in items %}
+          {% if item['current_people'] != item['max_people'] %}
           <div
             id="itemCards"
             class="h-48 bg-stone-200 mb-10 rounded-xl text-gray-900 p-4 flex items-center"
@@ -172,6 +167,7 @@
               다음에 참여하기
             </a>
           </div>
+          {% endif %}
           {% endfor %}
         </div>
       </div>

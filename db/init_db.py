@@ -10,14 +10,14 @@ def inital_db():
         'name':'홍길동'               #유저의 이름
     }
     initial_item = {
-        'item_id':'qwer1234',           #품목의 아이디
+        'item_id':'생필품',           #품목의 아이디
         'user_id': ['a','b','c'],       #공동구매에 참여할 인원 리스트
         'item_info': '생필품',            #품목의 정보
         'category':'생필품',              #품목의 카테고리
         'current_people': 2,            #공동구매에 현재 참여한 인원
         'max_people': 3,                #공동구매에 참여할 인원
         'url': 'https://www.naver.com', #품목의 구매주소
-        'item_type':0,                  #품목이 나눔, 공동구매인지 확인
+        'item_type':1,                  #품목이 나눔, 공동구매인지 확인
         'link':'https://www.naver.com', #카카오톡 오픈채팅 주소
         "place":'강의실',                 #만날 장소
         'time': '13시 30분',              #만날 시간
